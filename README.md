@@ -26,20 +26,21 @@ To get list of installed plugins
 Goals:
 * build a Jenkins master Docker image that meets the following criteria:
   * requires login (Active Directory/Github credentials/AWS Users - still have to decide on this)
-  * has required plugins installed (needs some cleanup)
-  * has BlueOcean installed
-  * has ec2 plugin installed and configured automatically (This may need to be environment specific)
-  * need to figure out how to pass AWS credentials through the environment (this is needed for spinning up ECS instances from the master)
+  * has plugins installed. These include BlueOcean plugins and ec2 plugin (needs some cleanup)
+  * has ec2 plugin configured automatically via groovy code (This may need to be environment specific)
+  * AWS credentials are passed through the environment (this is needed for spinning up ECS instances from the master)
   * master URL needs to be accessible from the slaves (need to figure that one out)
 * build a Jenkins slave Docker image that meets the following criteria:
   * has Docker installed
   * has inspec installed
-  * other dependencies like npm? Not sure at this point
-  * the idea is as we run the tests it starts things Grafana in a  sibling Docker container and run inspec tests against it
+  * has other dependencies like npm? Not sure at this point. Should we also consider building different types of slave images?
+  * the idea is as we run the inspec tests it starts things like Grafana in a sibling Docker container
 * provision Jenkins in AWS (I am looking for feedback here)
-  * a VPC used by Continous Delivery if needed for the CI/CD pipeline (all this is Terraformed ideally)
-  * setup subnets or all is in a public subnet
+  * a VPC used by Continuous Delivery if needed(all this is Terraformed ideally)
+  * setup public/private subnets or put all in a public subnet? (we are still protected by the VPN)
   * security groups
-  * Jenkins master is accessible for developers through VPN
-  * saves jenkins_home state in EFS (should it use a Docker volume?)
-  * has backup setup (future)
+  * provision ECS instances
+  * Jenkins master is accessible to developers through VPN
+  * saves jenkins_home state in EFS (is this going to be a Docker volume?)
+  * setup backup (future)
+  * HA for Jenkins master(future)
