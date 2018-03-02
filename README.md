@@ -1,6 +1,6 @@
-#README
+# README
 
-This repository will contain the code to setup the Delivery Pipeline. This structure is not set in stone and serves just a starting point.
+This repository contains the code to setup the Delivery Pipeline. This structure is not set in stone and serves just a starting point.
 
 ### master  
 Contains Docker file to create Jenkins Master image. The list of plugins needs to be cleaned up a little bit. Also I don't know if we want to install ruby and inspec in the master. That should be part of the slave.
