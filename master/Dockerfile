@@ -9,6 +9,7 @@ RUN gem install inspec
 # plugins install
 COPY plugins.txt /usr/share/jenkins/plugins.txt
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+COPY init.groovy.d /var/jenkins_home/init.groovy.d/
 
 # todo figure out how to configure ec2 plugin through groovy code
 # todo figure out how to configure authentication/authorization through groovy
