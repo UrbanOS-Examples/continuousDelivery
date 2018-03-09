@@ -1,6 +1,4 @@
 provider "aws" {
-  access_key = "AKIAI4J7CFABFBXN3L3Q"
-  secret_key = "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"
   region     = "us-east-2"
 }
 
@@ -12,9 +10,9 @@ resource "aws_vpc" "scos_cicd_vpc" {
   }
 }
 
-resource "aws_route53_zone" "scos-cicd" {
-  name = "no-clue-what-this-should-be"
-}
+//resource "aws_route53_zone" "scos-cicd" {
+//  name = "no-clue-what-this-should-be"
+//}
 
 data "aws_route_table" "default-local-vpc-rtb" {
   vpc_id = "${aws_vpc.scos_cicd_vpc.id}"
@@ -31,14 +29,14 @@ module "jenkins" {
 
   vpc_id             = "${aws_vpc.scos_cicd_vpc.id}"
   availability_zones = "${data.aws_availability_zones.available.names}"
-  hosted_zone_id     = "${aws_route53_zone.scos-cicd.zone_id}"
+//  hosted_zone_id     = "${aws_route53_zone.scos-cicd.zone_id}"
   domain_name        = "jenkins.cicd.scos"
 
   private_route_table_ids = ["${data.aws_route_table.default-local-vpc-rtb.id}"]
 
   #launch configuration for the master
   lc_instance_type = "t2.micro"
-  lc_ami_id        = "ami-"
+  lc_ami_id        = "ami-bb8eaede"
   lc_key_name      = "my-lab-key-name"
 
   ebs_volume_size = 10

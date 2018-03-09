@@ -209,6 +209,7 @@ variable "ebs_device_name" {
 
 variable "hosted_zone_id" {
   type        = "string"
+  default = ""
   description = "The ID of a hosted zone in which the ELB alias record should be created"
 }
 

@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "main" {
     )}",
   ]
 
-  provisioner "local-exec" {
-    command = "aws autoscaling update-auto-scaling-group --auto-scaling-group-name ${aws_autoscaling_group.main.name} --desired-capacity ${var.asg_size_desired_on_create} --region ${data.aws_region.current.name}"
-  }
+//  provisioner "local-exec" {
+//    command = "aws autoscaling update-auto-scaling-group --auto-scaling-group-name ${aws_autoscaling_group.main.name} --desired-capacity ${var.asg_size_desired_on_create} --region ${data.aws_region.current.name}"
+//  }
 }

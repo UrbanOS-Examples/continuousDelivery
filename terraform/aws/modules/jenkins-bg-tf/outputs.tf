@@ -22,9 +22,9 @@ output "elb_sg_id" {
   value = "${aws_security_group.elb.id}"
 }
 
-output "elb_fqdn" {
-  value = "${aws_route53_record.jenkins.fqdn}"
-}
+//output "elb_fqdn" {
+//  value = "${aws_route53_record.jenkins.fqdn}"
+//}
 
 output "ebs_volume_id" {
   value = "${aws_ebs_volume.jenkins.id}"
