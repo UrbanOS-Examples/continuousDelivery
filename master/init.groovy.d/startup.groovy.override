@@ -15,7 +15,7 @@ import jenkins.model.JenkinsLocationConfiguration
 
 import java.util.logging.Logger
 
-Logger.global.info("[Running] configure-ec2-plugin script")
+Logger.global.info("[Running] startup script")
 
 configureJenkinsURL()
 configureSecurity()
@@ -23,7 +23,7 @@ configureCloud()
 
 Jenkins.instance.save()
 
-Logger.global.info("[Done Running] configure-ec2-plugin script")
+Logger.global.info("[Done] startup script")
 
 private configureJenkinsURL() {
     String jenkinsURL = queryJenkinsURL()
@@ -105,6 +105,7 @@ private void configureCloud() {
     }
 }
 
+//cloudbees/jnlp-slave-with-java-build-tools
 private ECSTaskTemplate createECSTaskTemplate(String label, String image, int softMemory, int cpu) {
     Logger.global.info("Creating ECS Template '$label' for image '$image' (memory: softMemory, cpu: $cpu)")
     new ECSTaskTemplate(

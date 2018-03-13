@@ -1,15 +1,14 @@
-# Dockerfile for Jenkins Master
 FROM jenkinsci/jenkins
 
-# I would guess installing ruby, docker and inspec only needs to be done on the slaves
-USER root
-RUN apt-get update && apt-get install -y ruby ruby-dev gcc g++ make
-RUN gem install inspec
+ENV JENKINS_REF /usr/share/jenkins/ref
 
-# plugins install
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
-COPY init.groovy.d /var/jenkins_home/init.groovy.d/
+# install jenkins plugins
+COPY plugins.txt $JENKINS_REF/
+RUN /usr/local/bin/plugins.sh $JENKINS_REF/plugins.txt
 
-# todo figure out how to configure ec2 plugin through groovy code
-# todo figure out how to configure authentication/authorization through groovy
+ENV JAVA_OPTS -Dorg.eclipse.jetty.server.Request.maxFormContentSize=100000000 \
+ 			  -Dhudson.diyChunking=false \
+ 			  -Djenkins.install.runSetupWizard=false
+
+# copy scripts
+COPY init.groovy.d $JENKINS_REF/init.groovy.d/
