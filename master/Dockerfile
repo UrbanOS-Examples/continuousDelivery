@@ -1,4 +1,4 @@
-FROM jenkinsci/jenkins
+FROM jenkins/jenkins
 
 ENV JENKINS_REF /usr/share/jenkins/ref
 

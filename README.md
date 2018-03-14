@@ -15,6 +15,9 @@ Docker file to create Jenkins slave
 Code to provision Jenkins in aws
 
 ### Useful commands
+Build the docker image with:
+``docker build -t scos/jenkins .```
+
 To run Docker and skip the setup wizard
 ```docker run -d -p 8080:8080 -p 50000:50000 --name jenkins -e JAVA_OPTS=-Djenkins.install.runSetupWizard=false scos/jenkins```
 

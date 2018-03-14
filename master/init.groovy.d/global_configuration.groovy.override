@@ -1,0 +1,27 @@
+import jenkins.model.Jenkins
+import hudson.security.csrf.DefaultCrumbIssuer
+
+//Enable CSRF protection
+def instance = Jenkins.instance
+instance.setCrumbIssuer(new DefaultCrumbIssuer(true))
+instance.save()
+
+//disable CLI remoting
+jenkins.model.Jenkins.instance.getDescriptor("jenkins.CLI").get().setEnabled(false)
+
+//Disable all JNLP protocols except for JNLP4.  JNLP4 is the most secure agent
+//protocol because it is using standard TLS.
+if(!instance.isQuietingDown()) {
+    Set<String> agentProtocolsList = ['JNLP4-connect', 'Ping']
+    if(!instance.getAgentProtocols().equals(agentProtocolsList)) {
+        instance.setAgentProtocols(agentProtocolsList)
+        println "Agent Protocols have changed.  Setting: ${agentProtocolsList}"
+        instance.save()
+    }
+    else {
+        println "Nothing changed.  Agent Protocols already configured: ${instance.getAgentProtocols()}"
+    }
+}
+else {
+    println 'Shutdown mode enabled.  Configure Agent Protocols SKIPPED.'
+}

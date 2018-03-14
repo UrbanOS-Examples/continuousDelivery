@@ -2,7 +2,7 @@ workflow-job:2.17
 cloudbees-bitbucket-branch-source:2.2.10
 blueocean-rest-impl:1.4.2
 sse-gateway:1.15
-script-security:1.41
+script-security:1.42
 workflow-step-api:2.14
 blueocean-github-pipeline:1.4.2
 workflow-api:2.26
@@ -45,7 +45,7 @@ cloudbees-folder:6.3
 blueocean-i18n:1.4.2
 amazon-ecs:1.11
 blueocean-events:1.4.2
-config-file-provider:2.17
+config-file-provider:2.18
 blueocean-dashboard:1.4.2
 git-client:2.7.1
 blueocean-commons:1.4.2
