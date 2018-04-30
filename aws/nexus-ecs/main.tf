@@ -3,22 +3,27 @@ provider "aws" {
 }
 
 module "ecs-scalable-cluster" "nexus-cluster" {
-#  source = "../../../terraform-aws-ecs-scalable-cluster"
+  source = "../../../terraform-aws-ecs-scalable-cluster"
 #  source  = "anugnes/ecs-scalable-cluster/aws"
-  source = "SmartColumbusOS/ecs-scalable-cluster/aws"
+#  source = "SmartColumbusOS/ecs-scalable-cluster/aws"
   version = "1.1.4"
 
   # insert the 10 required variables here
 
   # Description: This is the ID of the VPC you want to use
-  vpc_id = "vpc-5d006f35"
+  # test vpc
+#  vpc_id = "vpc-5d006f35"
+  # AD vpc with only public subnets
+  vpc_id = "vpc-619efd09"
 
   # Description: List of subnet IDs to use when spinning up your cluster
-  subnet_id = "subnet-7edebb16"
-#  subnet_id = "subnet-jeff"
+  # test vpc private subnet
+#  subnet_id = "subnet-7edebb16"
+  # AD vpc public subnet
+  subnet_id = "subnet-cc23bba4"
 
   # Description: EC2 Instance Type
-  type = "t2.micro"
+  type = "t2.small"
 
   # Description: Max number of EC2 instances in the cluster
   cluster_max_size = 1
@@ -58,14 +63,16 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
 
   # ECS task definition's cpu units (max 1024)
-  ecs_task_def_cpu_units = 128
+  ecs_task_def_cpu_units = 256
 
   # ECS task definition's memory units
   ecs_task_def_memory_units = 128
 
   # ECS task definition's memory reservation
-  ecs_task_def_memory_reservation = 64
+  ecs_task_def_memory_reservation = 128
 
   # ECS service name
   ecs_service_name = "nexus_service"
+
+  ecs_service_tasks_desired_count = 0
 }
