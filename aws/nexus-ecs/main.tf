@@ -13,7 +13,7 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   # Description: This is the ID of the VPC you want to use
   # test vpc
 #  vpc_id = "vpc-5d006f35"
-  # AD vpc with only public subnets
+  # AD vpc with only public subnets - Hand created AD and VPC
   vpc_id = "vpc-619efd09"
 
   # Description: List of subnet IDs to use when spinning up your cluster
@@ -23,7 +23,7 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   subnet_id = "subnet-cc23bba4"
 
   # Description: EC2 Instance Type
-  type = "t2.small"
+  type = "t2.large"
 
   # Description: Max number of EC2 instances in the cluster
   cluster_max_size = 1
@@ -39,6 +39,7 @@ module "ecs-scalable-cluster" "nexus-cluster" {
 
   # Description: AWS Key Pair to use for instances in the cluster
   key_name = "jeff-vpc"
+#  key_name = "mihail-ds-kp"
 
   # Description: Role Name
   role_name = "nexus-role"
@@ -61,18 +62,21 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   # ECS task definition's docker image
 #  ecs_task_def_docker_image = "mongo:latest"
   ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
+#  ecs_task_def_docker_image = "jefflutz/nexus-aws-ad"
+#  ecs_task_def_docker_image = "mihailrc/jenkins"
+#  ecs_task_def_docker_image = "crccheck/hello-world"
 
   # ECS task definition's cpu units (max 1024)
   ecs_task_def_cpu_units = 256
 
-  # ECS task definition's memory units
-  ecs_task_def_memory_units = 128
+  # ECS task definition's memory units (max 1024)
+  ecs_task_def_memory_units = 2048
 
   # ECS task definition's memory reservation
-  ecs_task_def_memory_reservation = 128
+  ecs_task_def_memory_reservation = 2048
 
   # ECS service name
   ecs_service_name = "nexus_service"
 
-  ecs_service_tasks_desired_count = 0
+  ecs_service_tasks_desired_count = 1
 }
