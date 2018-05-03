@@ -11,7 +11,7 @@ variable "vpc_id" {
 terraform {
   backend "s3" {
     bucket         = "scos-terraform-state"
-    key            = "nexus-ecs"
+    key            = "nexus"
     region         = "us-east-2"
     dynamodb_table = "terraform_lock"
     encrypt        = "true"
@@ -33,8 +33,7 @@ data "terraform_remote_state" "vpc" {
 }
 
 module "ecs-scalable-cluster" "nexus-cluster" {
-
-  source = "SmartColumbusOS/ecs-scalable-cluster/aws"
+  source = "../modules/ecs"
   version = "1.1.4"
 
   # insert the 10 required variables here
@@ -45,9 +44,8 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   # Description: List of subnet IDs to use when spinning up your cluster
   # test vpc private subnet
   # VPC computed subnets
-  subnet_id = "${data.terraform_remote_state.vpc.private_subnets[0]}"
-
-  subnet_ids = ["${data.terraform_remote_state.vpc.private_subnets}"]
+  #subnet_ids = ["${split(",",data.terraform_remote_state.vpc.private_subnets)}"]
+  subnet_ids = "${data.terraform_remote_state.vpc.private_subnets}"
 
   # Description: EC2 Instance Type
   type = "t2.large"
@@ -66,7 +64,6 @@ module "ecs-scalable-cluster" "nexus-cluster" {
 
   # Description: AWS Key Pair to use for instances in the cluster
   key_name = "jeff-vpc"
-#  key_name = "mihail-ds-kp"
 
   # Description: Role Name
   role_name = "nexus-role"
@@ -87,12 +84,8 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   ecs_task_def_name = "nexus_task"
 
   # ECS task definition's docker image
-#  ecs_task_def_docker_image = "mongo:latest"
-#  ecs_task_def_docker_image = "jefflutz/nexus-aws-ad"
-#  ecs_task_def_docker_image = "mihailrc/jenkins"
-#  ecs_task_def_docker_image = "crccheck/hello-world"
-#  ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
-  ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/nexus"
+  #ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/nexus"
+  ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
 
   # ECS task definition's cpu units (max 1024)
   ecs_task_def_cpu_units = 256
@@ -107,4 +100,9 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   ecs_service_name = "nexus_service"
 
   ecs_service_tasks_desired_count = 1
+
+  efs_name = "nexus-efs"
+  efs_token = "mexus"
+  efs_mode = "generalPurpose"
+  efs_encrypted = false
 }
