@@ -44,7 +44,6 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   # Description: List of subnet IDs to use when spinning up your cluster
   # test vpc private subnet
   # VPC computed subnets
-  #subnet_ids = ["${split(",",data.terraform_remote_state.vpc.private_subnets)}"]
   subnet_ids = "${data.terraform_remote_state.vpc.private_subnets}"
 
   # Description: EC2 Instance Type
