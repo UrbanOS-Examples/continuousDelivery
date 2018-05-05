@@ -34,18 +34,19 @@ module "jenkins_cluster" {
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
   subnet_ids = "${join(",",data.terraform_remote_state.vpc.public_subnets)}"
 
-  component = "delivery-pipeline"
-  deployment_identifier = "test"
+  component = "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
 
-  cluster_name = "jenkins-cluster"
-  cluster_instance_ssh_public_key_path = "~/.ssh/id_rsa.pub"
-  cluster_instance_type = "t2.small"
-  cluster_instance_user_data_template = "${file("templates/instance-user-data.tpl")}"
-  cluster_instance_iam_policy_contents = "${file("templates/instance-policy.json")}"
+  cluster_name = "${var.cluster_name}"
+  cluster_instance_ssh_public_key_path =  "${var.cluster_instance_ssh_public_key_path}"
+  cluster_instance_type =  "${var.cluster_instance_type}"
+  cluster_instance_user_data_template =  "${file(var.cluster_instance_user_data_template)}"
+  cluster_instance_iam_policy_contents =  "${file(var.cluster_instance_iam_policy_contents)}"
 
-  cluster_minimum_size = 1
-  cluster_maximum_size = 4
-  cluster_desired_capacity = 2
+  cluster_minimum_size =  "${var.cluster_minimum_size}"
+  cluster_maximum_size =  "${var.cluster_maximum_size}"
+  cluster_desired_capacity =  "${var.cluster_desired_capacity}"
+  allowed_cidrs =  "${var.allowed_cidrs}"
 }
 
 module "jenkins_service" {
@@ -55,19 +56,19 @@ module "jenkins_service" {
   region = "${var.region}"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
-  component = "delivery-pipeline"
-  deployment_identifier = "test"
+  component ="${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
 
-  service_name = "jenkins-master"
-  service_image = "mihailrc/jenkins"
+  service_name = "${var.service_name}"
+  service_image = "${var.service_image}"
   service_port = "8080"
-  service_task_container_definitions="${file("templates/task-definition.json")}"
+  service_task_container_definitions="${file(var.service_task_container_definitions)}"
 
   service_desired_count = "1"
   service_deployment_maximum_percent = "100"
   service_deployment_minimum_healthy_percent = "50"
 
-  attach_to_load_balancer = "no"
+  attach_to_load_balancer = "${var.attach_to_load_balancer}"
 #  service_elb_name = "elb-service-web-app"
 
   service_volumes = [
@@ -79,6 +80,7 @@ module "jenkins_service" {
   ecs_cluster_id = "${module.jenkins_cluster.cluster_id}"
   ecs_cluster_service_role_arn = "${module.jenkins_cluster.service_role_arn}"
 }
+
 
 #todo: EFS, MountTarget, userData, scaling policy
 # Load Balancer
