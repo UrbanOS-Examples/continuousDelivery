@@ -26,17 +26,8 @@ variable "cluster_min_size" {
   description = "Min number of EC2 instances in the cluster"
 }
 
-variable "subnet_ids" {
-  description = "List of subnet IDs to use when spinning up your cluster"
-  type = "list"
-}
-
 variable "key_name" {
   description = "AWS Key Pair to use for instances in the cluster"
-}
-
-variable "vpc_id" {
-  description = "This is the ID of the VPC you want to use"
 }
 
 variable "container_name" {
@@ -45,6 +36,12 @@ variable "container_name" {
 
 # ------------------------------------
 # START OF NEW VARIABLES FOR ECS SERVICE/TASKS
+
+# region
+variable "region" {
+  description = "Region"
+  type = "string"
+}
 
 # AMI ECS image values/filter
 variable "ami_filter" {

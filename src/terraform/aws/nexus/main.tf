@@ -1,11 +1,5 @@
 provider "aws" {
-    region = "us-east-2"
-}
-
-variable "vpc_id" {
-  description = "This is the ID of the VPC you want to use"
-#  default = "vpc-619efd09"
-  default = "vpc-5d006f35"
+    region = "${var.region}"
 }
 
 terraform {
@@ -27,7 +21,7 @@ data "terraform_remote_state" "vpc" {
   config {
     bucket   = "scos-terraform-state"
     key      = "vpc"
-    region   = "us-east-2"
+    region   = "${var.region}"
     role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
   }
 }
@@ -44,64 +38,67 @@ module "ecs-scalable-cluster" "nexus-cluster" {
   # Description: List of subnet IDs to use when spinning up your cluster
   # test vpc private subnet
   # VPC computed subnets
-  subnet_ids = "${data.terraform_remote_state.vpc.private_subnets}"
+  subnet_ids = "${data.terraform_remote_state.vpc.public_subnets}"
 
   # Description: EC2 Instance Type
-  type = "t2.large"
+  type = "${var.type}"
 
   # Description: Max number of EC2 instances in the cluster
-  cluster_max_size = 1
+  cluster_max_size = "${var.cluster_max_size}"
 
   #Description: Min number of EC2 instances in the cluster
-  cluster_min_size = 1
+  cluster_min_size = "${var.cluster_min_size}"
 
   # Description: The name of your ECS cluster
-  cluster_name = "nexus-cluster"
+  cluster_name = "${var.cluster_name}"
 
   # Description: EC2 Instance Profile Name
-  instance_profile_name = "nexus-profile"
+  instance_profile_name = "${var.instance_profile_name}"
 
   # Description: AWS Key Pair to use for instances in the cluster
-  key_name = "jeff-vpc"
+  key_name = "${var.key_name}"
 
   # Description: Role Name
-  role_name = "nexus-role"
+  role_name = "${var.role_name}"
 
   # Description: Role Policy Name
-  role_policy_name = "EC2DomainJoin"
+  role_policy_name = "${var.role_policy_name}"
 
   # -----------------------------------------
   # START OF NEW VARIABLES FOR ECS SERVICE/TASKSi
 
+  # Launch control public ip address (true/false)
+  launch_control_public_ip = "${var.launch_control_public_ip}"
+
   # Name of container within load balancer
-  container_name = "nexus-container"
+  container_name = "${var.container_name}"
 
   # AMI ECS image values/filter
-  ami_filter = "*-amazon-ecs-optimized"
+  ami_filter = "${var.ami_filter}"
 
   # ECS task definition name
-  ecs_task_def_name = "nexus_task"
+  ecs_task_def_name = "${var.ecs_task_def_name}"
 
   # ECS task definition's docker image
-  #ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/nexus"
-  ecs_task_def_docker_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
+  ecs_task_def_docker_image = "${var.ecs_task_def_docker_image}"
 
   # ECS task definition's cpu units (max 1024)
-  ecs_task_def_cpu_units = 256
+  ecs_task_def_cpu_units = "${var.ecs_task_def_cpu_units}"
 
   # ECS task definition's memory units (max 1024)
-  ecs_task_def_memory_units = 2048
+  ecs_task_def_memory_units = "${var.ecs_task_def_memory_units}"
 
   # ECS task definition's memory reservation
-  ecs_task_def_memory_reservation = 2048
+  ecs_task_def_memory_reservation = "${var.ecs_task_def_memory_reservation}"
 
   # ECS service name
-  ecs_service_name = "nexus_service"
+  ecs_service_name = "${var.ecs_service_name}"
 
-  ecs_service_tasks_desired_count = 1
+  ecs_service_tasks_desired_count = "${var.ecs_service_tasks_desired_count}"
 
-  efs_name = "nexus-efs"
-  efs_token = "mexus"
-  efs_mode = "generalPurpose"
-  efs_encrypted = false
+  efs_name = "${var.efs_name}"
+  efs_token = "${var.efs_token}"
+  efs_mode = "${var.efs_mode}"
+  efs_encrypted = "${var.efs_encrypted}"
+
 }
