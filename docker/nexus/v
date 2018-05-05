@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker run -it -p 8081:8081 -v nexus-data:/nexus-data --name nexus jefflutz/nexus-aws-ad bash
