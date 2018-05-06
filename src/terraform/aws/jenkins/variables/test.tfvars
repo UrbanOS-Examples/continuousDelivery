@@ -15,4 +15,4 @@ allowed_cidrs = ["0.0.0.0/0"]
 service_name = "jenkins-master"
 service_image = "mihailrc/jenkins"
 service_task_container_definitions="templates/task-definition.json"
-attach_to_load_balancer = "no"
+attach_to_load_balancer = "yes"

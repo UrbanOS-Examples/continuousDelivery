@@ -81,3 +81,9 @@ variable "service_elb_name" {
   description = "The name of the ELB to configure to point at the service containers"
   default     = ""
 }
+
+#Load balance variables
+variable "domain_name" {
+  description = "The domain name of the supplied Route 53 zones."
+  default     = ""
+}

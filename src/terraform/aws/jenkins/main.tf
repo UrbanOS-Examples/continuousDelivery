@@ -49,6 +49,41 @@ module "jenkins_cluster" {
   allowed_cidrs =  "${var.allowed_cidrs}"
 }
 
+module "ecs_load_balancer" {
+  #infrablocks load balancer uses HTTPS which in turn requires a certificate.
+  #to issue these we need to set up a certificate manager. To avaoid nother
+  #wild goose chase AWS style I simply compied the module and changed the protocol to HTTP
+
+  source = "../modules/elb"
+  version = "0.1.10"
+
+  region = "${var.region}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+  subnet_ids = "${data.terraform_remote_state.vpc.public_subnets}"
+
+  component =  "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
+
+  service_name = "${var.service_name}"
+  service_port = "8080"
+  service_certificate_arn = ""
+
+  domain_name = "deliveryPipeline.smartcolumbusos.com"
+  public_zone_id = "Z2TQLOWLDABB3W"
+  private_zone_id = "Z3KXSBDSLMD8L4"
+
+  health_check_target = "HTTP:8080/login"
+
+  allow_cidrs = [
+    "0.0.0.0/0"
+  ]
+
+  include_public_dns_record = "yes"
+  include_private_dns_record = "no"
+
+  expose_to_public_internet = "yes"
+}
+
 module "jenkins_service" {
   source = "infrablocks/ecs-service/aws"
   version = "0.1.10"
@@ -56,7 +91,7 @@ module "jenkins_service" {
   region = "${var.region}"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
-  component ="${var.component}"
+  component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
 
   service_name = "${var.service_name}"
@@ -69,7 +104,7 @@ module "jenkins_service" {
   service_deployment_minimum_healthy_percent = "50"
 
   attach_to_load_balancer = "${var.attach_to_load_balancer}"
-#  service_elb_name = "elb-service-web-app"
+  service_elb_name = "${module.ecs_load_balancer.name}"
 
   service_volumes = [
     {
@@ -80,7 +115,6 @@ module "jenkins_service" {
   ecs_cluster_id = "${module.jenkins_cluster.cluster_id}"
   ecs_cluster_service_role_arn = "${module.jenkins_cluster.service_role_arn}"
 }
-
 
 #todo: EFS, MountTarget, userData, scaling policy
 # Load Balancer
