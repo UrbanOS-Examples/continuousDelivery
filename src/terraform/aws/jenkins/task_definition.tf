@@ -5,7 +5,7 @@ data "template_file" "task_definition" {
     name = "${var.service_name}"
     image = "${var.service_image}"
     command = "${jsonencode(var.service_command)}"
-    port = "8080"
+    port = "${var.service_port}"
     region = "${var.region}"
     log_group = "${module.jenkins_service.log_group}"
     elb_name = "${module.ecs_load_balancer.name}"

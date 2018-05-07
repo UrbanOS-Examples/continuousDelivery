@@ -58,6 +58,43 @@ variable "allowed_cidrs" {
   default     = ["10.0.0.0/8"]
 }
 
+#Load balance variables
+variable "domain_name" {
+  description = "The domain name of the supplied Route 53 zones."
+}
+
+variable "service_port" {
+  description = "The port on which the service containers are listening"
+}
+
+variable "public_zone_id" {
+  description = "The ID of the public Route 53 zone"
+}
+
+variable "private_zone_id" {
+  description = "The ID of the private Route 53 zone"
+}
+
+variable "allow_lb_cidrs" {
+  description = "A list of CIDRs from which the ELB is reachable"
+  type = "list"
+}
+
+variable "include_public_dns_record" {
+  description = "Whether or not to create a public DNS record"
+  default = "no"
+}
+
+variable "include_private_dns_record" {
+  description = "Whether or not to create a private DNS record"
+    default = "yes"
+}
+
+variable "expose_to_public_internet" {
+  description = "Whether or not the ELB is publicly accessible"
+  default = "no"
+}
+
 #service variables
 variable "service_name" {
   description = "The name of the service being created"
@@ -86,10 +123,4 @@ variable "service_command" {
   description = "The command to run to start the container."
   type = "list"
   default = []
-}
-
-#Load balance variables
-variable "domain_name" {
-  description = "The domain name of the supplied Route 53 zones."
-  default     = ""
 }

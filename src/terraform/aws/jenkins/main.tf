@@ -65,23 +65,21 @@ module "ecs_load_balancer" {
   deployment_identifier = "${var.deployment_identifier}"
 
   service_name = "${var.service_name}"
-  service_port = "8080"
+  service_port = "${var.service_port}"
   service_certificate_arn = ""
 
-  domain_name = "deliveryPipeline.smartcolumbusos.com"
-  public_zone_id = "Z2TQLOWLDABB3W"
-  private_zone_id = "Z3KXSBDSLMD8L4"
+  domain_name = "${var.domain_name}"
+  public_zone_id = "${var.public_zone_id}"
+  private_zone_id = "${var.private_zone_id}"
 
   health_check_target = "HTTP:8080/login"
 
-  allow_cidrs = [
-    "0.0.0.0/0"
-  ]
+  allow_cidrs = "${var.allow_lb_cidrs}"
 
-  include_public_dns_record = "yes"
-  include_private_dns_record = "no"
+  include_public_dns_record = "${var.include_public_dns_record}"
+  include_private_dns_record = "${var.include_private_dns_record}"
 
-  expose_to_public_internet = "yes"
+  expose_to_public_internet = "${var.expose_to_public_internet}"
 }
 
 module "jenkins_service" {
@@ -96,7 +94,7 @@ module "jenkins_service" {
 
   service_name = "${var.service_name}"
   service_image = "${var.service_image}"
-  service_port = "8080"
+  service_port = "${var.service_port}"
   service_task_container_definitions="${data.template_file.task_definition.rendered}"
 
   service_desired_count = "1"
@@ -117,4 +115,3 @@ module "jenkins_service" {
 }
 
 #todo: EFS, MountTarget, userData, scaling policy
-# Load Balancer

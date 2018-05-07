@@ -68,7 +68,8 @@ Goals:
     * implements scale up and scale down policies
     * configure Route 53
     * migrate ELB from classic
-    * restring Jenkins access by IP?
+    * restrict Jenkins access by IP?
+    * extract LB variables
   * Nexus TBD with Jeff
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
