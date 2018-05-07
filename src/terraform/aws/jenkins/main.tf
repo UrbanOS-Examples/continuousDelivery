@@ -84,6 +84,20 @@ module "ecs_load_balancer" {
   expose_to_public_internet = "yes"
 }
 
+data "template_file" "task_definition" {
+  template = "${file("${path.module}/templates/task-definition.json.tpl")}"
+
+  vars {
+    name = "${var.service_name}"
+    image = "${var.service_image}"
+    command = "${jsonencode(var.service_command)}"
+    port = "8080"
+    region = "${var.region}"
+    log_group = "${module.jenkins_service.log_group}"
+    elb_name = "${module.ecs_load_balancer.name}"
+  }
+}
+
 module "jenkins_service" {
   source = "infrablocks/ecs-service/aws"
   version = "0.1.10"
@@ -97,7 +111,7 @@ module "jenkins_service" {
   service_name = "${var.service_name}"
   service_image = "${var.service_image}"
   service_port = "8080"
-  service_task_container_definitions="${file(var.service_task_container_definitions)}"
+  service_task_container_definitions="${data.template_file.task_definition.rendered}"
 
   service_desired_count = "1"
   service_deployment_maximum_percent = "100"

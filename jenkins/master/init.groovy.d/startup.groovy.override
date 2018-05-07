@@ -45,9 +45,11 @@ private getClientConfiguration() {
 
 private String queryElbDNSName() {
     AmazonElasticLoadBalancingClient client = new AmazonElasticLoadBalancingClient(clientConfiguration);
+    def elbName = System.getenv()['ELB_NAME']
+    Logger.global.info("ELB NAME is " + elbName)
     client.setRegion(RegionUtils.getRegion(region))
     DescribeLoadBalancersRequest request = new DescribeLoadBalancersRequest()
-            .withLoadBalancerNames('jenkins-elb');
+            .withLoadBalancerNames(elbName);
     DescribeLoadBalancersResult result = client.describeLoadBalancers(request);
     result.loadBalancerDescriptions.first().DNSName
 }

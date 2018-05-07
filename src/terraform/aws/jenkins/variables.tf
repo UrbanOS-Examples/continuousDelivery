@@ -82,6 +82,12 @@ variable "service_elb_name" {
   default     = ""
 }
 
+variable "service_command" {
+  description = "The command to run to start the container."
+  type = "list"
+  default = []
+}
+
 #Load balance variables
 variable "domain_name" {
   description = "The domain name of the supplied Route 53 zones."

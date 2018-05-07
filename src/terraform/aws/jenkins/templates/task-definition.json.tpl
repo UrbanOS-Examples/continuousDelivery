@@ -5,6 +5,7 @@
     "memory": 1024,
     "essential": true,
     "command": ${command},
+    "environment" : [{ "name" : "ELB_NAME", "value" : "${elb_name}" }],
     "portMappings": [
       {
         "containerPort": ${port},
