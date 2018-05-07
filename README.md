@@ -47,3 +47,30 @@ Goals:
   * saves jenkins_home state in EFS (is this going to be a Docker volume?)
   * setup backup (future)
   * HA for Jenkins master(future)
+
+
+  TODO:
+  * Jenkins Master image
+   * select cluster when Jenkins starts up - done
+   * extract task definition template in separate file - done
+   * configure Nexus so Jenkins can push to it
+   * configure SCOS Github Repo so is automatically monitored
+   * handle secrets with a Jenkins plugin for now
+   * fix security warnings
+   * configure LDAP
+  * Jenkins Slave image
+    * docker, terraform and inspec installed
+    * other docker containers start as siblings - Jenkins has a docker plugin. How can we use it?
+  * Terraform
+    * EFS
+    * move Jenkins to private subnets   
+    * tune number of instances to start
+    * implements scale up and scale down policies
+    * configure Route 53
+    * migrate ELB from classic
+    * restrict Jenkins access by IP?
+    * extract LB variables
+  * Nexus TBD with Jeff
+  * Jenkins file for sample repository - pick monitoring
+    * runs docker inspec tests in a sibling docker container
+    * publishes to Nexus if successful        
