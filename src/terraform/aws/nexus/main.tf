@@ -26,6 +26,18 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "terraform_remote_state" "efs" {
+  backend   = "s3"
+  workspace = "${terraform.workspace}"
+
+  config {
+    bucket   = "scos-terraform-state"
+    key      = "efs"
+    region   = "us-east-2"
+    role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+  }
+}
+
 module "ecs-scalable-cluster" "nexus-cluster" {
   source = "../modules/ecs"
   version = "1.1.4"
@@ -51,7 +63,6 @@ module "ecs-scalable-cluster" "nexus-cluster" {
 
   # Description: The name of your ECS cluster
   cluster_name = "${var.cluster_name}"
-
   # Description: EC2 Instance Profile Name
   instance_profile_name = "${var.instance_profile_name}"
 
@@ -96,9 +107,7 @@ module "ecs-scalable-cluster" "nexus-cluster" {
 
   ecs_service_tasks_desired_count = "${var.ecs_service_tasks_desired_count}"
 
-  efs_name = "${var.efs_name}"
-  efs_token = "${var.efs_token}"
-  efs_mode = "${var.efs_mode}"
-  efs_encrypted = "${var.efs_encrypted}"
+  efs_id =  "${data.terraform_remote_state.efs.efs_id}"
+  efs_dns_name = "${data.terraform_remote_state.efs.dns_name}"
 
 }
