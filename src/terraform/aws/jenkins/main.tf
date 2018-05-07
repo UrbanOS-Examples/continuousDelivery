@@ -26,6 +26,18 @@ data "terraform_remote_state" "vpc" {
  }
 }
 
+data "terraform_remote_state" "efs" {
+  backend   = "s3"
+  workspace = "${terraform.workspace}"
+
+  config {
+    bucket   = "scos-terraform-state"
+    key      = "efs"
+    region   = "us-east-2"
+    role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+  }
+}
+
 module "jenkins_cluster" {
   source = "infrablocks/ecs-cluster/aws"
   version = "0.2.5"
@@ -40,7 +52,7 @@ module "jenkins_cluster" {
   cluster_name = "${var.cluster_name}"
   cluster_instance_ssh_public_key_path =  "${var.cluster_instance_ssh_public_key_path}"
   cluster_instance_type =  "${var.cluster_instance_type}"
-  cluster_instance_user_data_template =  "${file(var.cluster_instance_user_data_template)}"
+  cluster_instance_user_data_template =  "${data.template_file.instance_user_data.rendered}"
   cluster_instance_iam_policy_contents =  "${file(var.cluster_instance_iam_policy_contents)}"
 
   cluster_minimum_size =  "${var.cluster_minimum_size}"
