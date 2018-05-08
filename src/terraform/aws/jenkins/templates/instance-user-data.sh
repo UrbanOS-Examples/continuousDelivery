@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export log=/var/log/user_data.sh.log
-export docker_data_dir=${mount_point}/nexus-data
+export docker_data_dir=${mount_point}/${directory_name}
 
 echo "About to define ecs.config file" >> $log
 echo ECS_CLUSTER=${cluster_name} >> /etc/ecs/ecs.config
@@ -45,7 +45,7 @@ while [ $res -ne 0 ] ; do
 done
 
 if [ $mount_successful -eq 0 ] ; then
-  echo "Since the EFS mount was successful, need to change the permissions on nexus directory." >> $log
+  echo "Since the EFS mount was successful, need to change the permissions on $docker_data_dir directory." >> $log
   mkdir -p $docker_data_dir
   chmod 777 $docker_data_dir
   container_id=`docker ps |fgrep ${docker_image}|awk '{print $1}'`
