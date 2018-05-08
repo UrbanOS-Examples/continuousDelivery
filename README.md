@@ -62,14 +62,15 @@ Goals:
     * docker, terraform and inspec installed
     * other docker containers start as siblings - Jenkins has a docker plugin. How can we use it?
   * Terraform
-    * EFS
+    * EFS for Jenkins - done
     * move Jenkins to private subnets   
     * tune number of instances to start
     * implements scale up and scale down policies
     * configure Route 53
     * migrate ELB from classic
     * restrict Jenkins access by IP?
-    * extract LB variables
+    * extract LB variables - done
+    * use EC2 image that has up to date ECS agent
   * Nexus TBD with Jeff
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
