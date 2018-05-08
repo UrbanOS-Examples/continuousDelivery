@@ -2,21 +2,21 @@
   {
     "name": "${name}",
     "image": "${image}",
+    "cpu": ${cpu},
     "memory": ${memory},
+    "memoryReservation": ${memoryReservation},
     "essential": true,
-    "command": ${command},
-    "environment" : [{ "name" : "ELB_NAME", "value" : "${elb_name}" }],
     "portMappings": [
-      {
-        "containerPort": ${port},
-        "hostPort": ${port}
-      }
+        {
+            "containerPort": ${port},
+            "hostPort": ${port}
+        }
     ],
     "mountPoints": [
-      {
-        "sourceVolume": "${directory_name}",
-        "containerPath": "/var/${directory_name}"
-      }
+          {
+            "sourceVolume": "${directory_name}",
+            "containerPath": "/${directory_name}"
+          }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",

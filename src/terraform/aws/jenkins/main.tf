@@ -118,7 +118,8 @@ module "jenkins_service" {
 
   service_volumes = [
     {
-      name = "data"
+      name = "${var.directory_name}"
+      host_path = "/efs/${var.directory_name}"
     }
   ]
 

@@ -124,3 +124,11 @@ variable "service_command" {
   type = "list"
   default = []
 }
+
+variable "memory" {
+  description = "Memory"
+}
+
+variable "directory_name" {
+  description = "Directory where data is saved"
+}

@@ -1,29 +1,29 @@
 provider "aws" {
-    region = "${var.region}"
+  region = "${var.region}"
 }
 
 terraform {
   backend "s3" {
-    bucket         = "scos-terraform-state"
-    key            = "nexus"
-    region         = "us-east-2"
-    dynamodb_table = "terraform_lock"
-    encrypt        = "true"
-    role_arn       = "arn:aws:iam::784801362222:role/UpdateTerraform"
-  }
+   bucket = "scos-terraform-state"
+   key    = "nexus"
+   region = "us-east-2"
+   dynamodb_table="terraform_lock"
+   encrypt = "true"
+   role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+ }
 }
 
 #refer to existing VPC
 data "terraform_remote_state" "vpc" {
-  backend   = "s3"
-  workspace = "${terraform.workspace}"
+ backend     = "s3"
+ workspace = "${terraform.workspace}"
 
-  config {
-    bucket   = "scos-terraform-state"
-    key      = "vpc"
-    region   = "${var.region}"
-    role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
-  }
+ config {
+   bucket = "scos-terraform-state"
+   key    = "vpc"
+   region = "us-east-2"
+   role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+ }
 }
 
 data "terraform_remote_state" "efs" {
@@ -38,76 +38,93 @@ data "terraform_remote_state" "efs" {
   }
 }
 
-module "ecs-scalable-cluster" "nexus-cluster" {
-  source = "../modules/ecs"
-  version = "1.1.4"
+module "cluster" {
+  source = "infrablocks/ecs-cluster/aws"
+  version = "0.2.5"
 
-  # insert the 10 required variables here
-
-  # Description: This is the ID of the VPC you want to use
+  region = "${var.region}"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+  subnet_ids = "${join(",",data.terraform_remote_state.vpc.public_subnets)}"
 
-  # Description: List of subnet IDs to use when spinning up your cluster
-  # test vpc private subnet
-  # VPC computed subnets
+  component = "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
+
+  cluster_name = "${var.cluster_name}"
+  cluster_instance_ssh_public_key_path =  "${var.cluster_instance_ssh_public_key_path}"
+  cluster_instance_type =  "${var.cluster_instance_type}"
+  cluster_instance_user_data_template =  "${data.template_file.instance_user_data.rendered}"
+  cluster_instance_iam_policy_contents =  "${file(var.cluster_instance_iam_policy_contents)}"
+
+  cluster_minimum_size =  "${var.cluster_minimum_size}"
+  cluster_maximum_size =  "${var.cluster_maximum_size}"
+  cluster_desired_capacity =  "${var.cluster_desired_capacity}"
+  allowed_cidrs =  "${var.allowed_cidrs}"
+}
+
+module "ecs_load_balancer" {
+  #infrablocks load balancer uses HTTPS which in turn requires a certificate.
+  #to issue these we need to set up a certificate manager. To avaoid nother
+  #wild goose chase AWS style I simply compied the module and changed the protocol to HTTP
+
+  source = "../modules/elb"
+  version = "0.1.10"
+
+  region = "${var.region}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
   subnet_ids = "${data.terraform_remote_state.vpc.public_subnets}"
 
-  # Description: EC2 Instance Type
-  type = "${var.type}"
+  component =  "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
 
-  # Description: Max number of EC2 instances in the cluster
-  cluster_max_size = "${var.cluster_max_size}"
+  service_name = "${var.service_name}"
+  service_port = "${var.service_port}"
+  service_certificate_arn = ""
 
-  #Description: Min number of EC2 instances in the cluster
-  cluster_min_size = "${var.cluster_min_size}"
+  domain_name = "${var.domain_name}"
+  public_zone_id = "${var.public_zone_id}"
+  private_zone_id = "${var.private_zone_id}"
 
-  # Description: The name of your ECS cluster
-  cluster_name = "${var.cluster_name}"
-  # Description: EC2 Instance Profile Name
-  instance_profile_name = "${var.instance_profile_name}"
+  health_check_target = "HTTP:8081/"
 
-  # Description: AWS Key Pair to use for instances in the cluster
-  key_name = "${var.key_name}"
+  allow_cidrs = "${var.allow_lb_cidrs}"
 
-  # Description: Role Name
-  role_name = "${var.role_name}"
+  include_public_dns_record = "${var.include_public_dns_record}"
+  include_private_dns_record = "${var.include_private_dns_record}"
 
-  # Description: Role Policy Name
-  role_policy_name = "${var.role_policy_name}"
-
-  # -----------------------------------------
-  # START OF NEW VARIABLES FOR ECS SERVICE/TASKSi
-
-  # Launch control public ip address (true/false)
-  launch_control_public_ip = "${var.launch_control_public_ip}"
-
-  # Name of container within load balancer
-  container_name = "${var.container_name}"
-
-  # AMI ECS image values/filter
-  ami_filter = "${var.ami_filter}"
-
-  # ECS task definition name
-  ecs_task_def_name = "${var.ecs_task_def_name}"
-
-  # ECS task definition's docker image
-  ecs_task_def_docker_image = "${var.ecs_task_def_docker_image}"
-
-  # ECS task definition's cpu units (max 1024)
-  ecs_task_def_cpu_units = "${var.ecs_task_def_cpu_units}"
-
-  # ECS task definition's memory units (max 1024)
-  ecs_task_def_memory_units = "${var.ecs_task_def_memory_units}"
-
-  # ECS task definition's memory reservation
-  ecs_task_def_memory_reservation = "${var.ecs_task_def_memory_reservation}"
-
-  # ECS service name
-  ecs_service_name = "${var.ecs_service_name}"
-
-  ecs_service_tasks_desired_count = "${var.ecs_service_tasks_desired_count}"
-
-  efs_id =  "${data.terraform_remote_state.efs.efs_id}"
-  efs_dns_name = "${data.terraform_remote_state.efs.dns_name}"
-
+  expose_to_public_internet = "${var.expose_to_public_internet}"
 }
+
+module "service" {
+  source = "infrablocks/ecs-service/aws"
+  version = "0.1.10"
+
+  region = "${var.region}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+
+  component = "${var.component}"
+  deployment_identifier = "${var.deployment_identifier}"
+
+  service_name = "${var.service_name}"
+  service_image = "${var.service_image}"
+  service_port = "${var.service_port}"
+  service_task_container_definitions="${data.template_file.task_definition.rendered}"
+
+  service_desired_count = "1"
+  service_deployment_maximum_percent = "200"
+  service_deployment_minimum_healthy_percent = "50"
+
+  attach_to_load_balancer = "${var.attach_to_load_balancer}"
+  service_elb_name = "${module.ecs_load_balancer.name}"
+
+  service_volumes = [
+    {
+      name = "${var.directory_name}"
+      host_path = "/efs/${var.directory_name}"
+    }
+  ]
+
+  ecs_cluster_id = "${module.cluster.cluster_id}"
+  ecs_cluster_service_role_arn = "${module.cluster.service_role_arn}"
+}
+
+#todo: EFS, MountTarget, userData, scaling policy
