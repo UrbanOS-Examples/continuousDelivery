@@ -53,7 +53,7 @@ Goals:
   * Jenkins Master image
    * select cluster when Jenkins starts up - done
    * extract task definition template in separate file - done
-   * configure Nexus so Jenkins can push to it
+   * configure Nexus so Jenkins can push to it:  http://codeheaven.io/using-nexus-3-as-your-repository-part-3-docker-images/
    * configure SCOS Github Repo so is automatically monitored
    * handle secrets with a Jenkins plugin for now
    * fix security warnings
@@ -62,7 +62,7 @@ Goals:
     * docker, terraform and inspec installed
     * other docker containers start as siblings - Jenkins has a docker plugin. How can we use it?
   * Terraform
-    * EFS
+    * EFS - done
     * move Jenkins to private subnets   
     * tune number of instances to start
     * implements scale up and scale down policies
@@ -71,6 +71,9 @@ Goals:
     * restrict Jenkins access by IP?
     * extract LB variables
   * Nexus TBD with Jeff
+  * Nexus confirmation of EFS persistance by restarting Nexus container and confirming configuration remains
+  * Nexus setup of LDAP
+  * Change Nexus local admin password from its default setting
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
     * publishes to Nexus if successful        
