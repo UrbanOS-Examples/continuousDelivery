@@ -10,6 +10,14 @@
         {
             "containerPort": ${port},
             "hostPort": ${port}
+        },
+        {
+            "containerPort": 8082,
+            "hostPort": 8082
+        },
+        {
+            "containerPort": 8083,
+            "hostPort": 8083
         }
     ],
     "mountPoints": [
