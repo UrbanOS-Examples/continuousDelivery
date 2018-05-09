@@ -112,7 +112,7 @@ variable "service_task_container_definitions" {
 
 variable "attach_to_load_balancer" {
   description = "Whether or not this service should attach to a load balancer"
-  default     = "yes"
+  default     = "no"
 }
 
 variable "service_elb_name" {

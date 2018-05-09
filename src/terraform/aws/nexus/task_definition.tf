@@ -11,7 +11,6 @@ data "template_file" "task_definition" {
     port = "${var.service_port}"
     region = "${var.region}"
     log_group = "${module.service.log_group}"
-    elb_name = "${module.ecs_load_balancer.name}"
     directory_name="${var.directory_name}"
 
   }

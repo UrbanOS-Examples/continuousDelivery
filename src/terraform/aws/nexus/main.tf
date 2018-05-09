@@ -110,7 +110,7 @@ module "service" {
   service_task_container_definitions="${data.template_file.task_definition.rendered}"
 
   service_desired_count = "1"
-  service_deployment_maximum_percent = "200"
+  service_deployment_maximum_percent = "100"
   service_deployment_minimum_healthy_percent = "50"
 
   attach_to_load_balancer = "${var.attach_to_load_balancer}"
