@@ -74,8 +74,8 @@ Goals:
   * Nexus
     * Nexus confirmation of EFS persistence by restarting Nexus container and confirming configuration remains - done
     * Nexus setup of LDAP
-    * Change Nexus local admin password from its default setting
-    * Change Nexus script to same approach use by Jenkins
+    * Change Nexus local admin password from its default setting - DONE
+    * Change Nexus script to same approach use by Jenkins - DONE
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
     * publishes to Nexus if successful        
