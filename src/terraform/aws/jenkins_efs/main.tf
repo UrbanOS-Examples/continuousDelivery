@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
    bucket = "scos-terraform-state"
-   key    = "nexus_efs"
+   key    = "jenkins_efs"
    region = "us-east-2"
    dynamodb_table="terraform_lock"
    encrypt = "true"
