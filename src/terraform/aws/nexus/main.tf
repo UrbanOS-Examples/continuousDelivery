@@ -32,10 +32,19 @@ data "terraform_remote_state" "efs" {
 
   config {
     bucket   = "scos-terraform-state"
-    key      = "efs"
+    key      = "nexus_efs"
     region   = "us-east-2"
     role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
   }
+}
+
+module "mount_targets" {
+  source = "../modules/efs_mount_target"
+  name = "stuff"
+  vpc_id = "${data.terraform_remote_state.vpc.id}"
+  mount_target_tags  = "${var.mount_target_tags}"
+  subnets = "${data.terraform_remote_state.vpc.private_subnets.id}"
+  efs_id = "${data.terraform_remote_state.efs.efs_id}"
 }
 
 module "cluster" {

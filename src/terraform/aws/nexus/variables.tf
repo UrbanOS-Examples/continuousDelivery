@@ -142,3 +142,9 @@ variable "memory_reservation" {
 variable "directory_name" {
     description = "Directory where data is saved"
 }
+
+variable "mount_target_tags" {
+  description  = "Mount target tags"
+  type = "map"
+  default = {}
+}
