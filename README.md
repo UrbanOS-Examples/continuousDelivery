@@ -78,4 +78,7 @@ Goals:
     * Change Nexus script to same approach use by Jenkins - DONE
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
-    * publishes to Nexus if successful        
+    * publishes to Nexus if successful    
+  * Other  
+    * Resolve conflict with elb security group name.
+    * Consider an approach where security groups are reusable. E.g. use same security groups for Delivery Pipeline load balancers    

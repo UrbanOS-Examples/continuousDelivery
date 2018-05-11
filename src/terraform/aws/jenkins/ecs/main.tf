@@ -44,7 +44,7 @@ module "jenkins_cluster" {
 
   region = "${var.region}"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  subnet_ids = "${join(",",data.terraform_remote_state.vpc.public_subnets)}"
+  subnet_ids = "${join(",",data.terraform_remote_state.vpc.private_subnets)}"
 
   component = "${var.component}"
   deployment_identifier = "${var.deployment_identifier}"
