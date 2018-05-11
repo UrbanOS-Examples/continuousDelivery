@@ -120,7 +120,7 @@ module "service" {
   service_volumes = [
     {
       name = "${var.directory_name}"
-      host_path = "/efs"
+      host_path = "/efs/nexus-data"
     }
   ]
 
