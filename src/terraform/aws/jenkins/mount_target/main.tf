@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
    bucket = "scos-terraform-state"
-   key    = "nexus_efs_mount_target"
+   key    = "jenkins_efs_mount_target"
    region = "us-east-2"
    dynamodb_table="terraform_lock"
    encrypt = "true"
@@ -32,7 +32,7 @@ data "terraform_remote_state" "efs" {
 
   config {
     bucket   = "scos-terraform-state"
-    key      = "nexus_efs"
+    key      = "jenkins_efs"
     region   = "us-east-2"
     role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
   }
@@ -40,9 +40,9 @@ data "terraform_remote_state" "efs" {
 
 module "mount_targets" {
   source = "../../modules/efs_mount_target"
-  sg_name = "nexus-data"
+  sg_name = "jenkins-data"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  mount_target_tags  = {"name" = "nexus"}
+  mount_target_tags  = {"name" = "jenkins"}
   subnets = "${data.terraform_remote_state.vpc.private_subnets}"
   efs_id = "${data.terraform_remote_state.efs.efs_id}"
 }
