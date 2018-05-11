@@ -39,7 +39,7 @@ data "terraform_remote_state" "efs" {
 }
 
 module "mount_targets" {
-  source = "../modules/efs_mount_target"
+  source = "../../modules/efs_mount_target"
   sg_name = "nexus-data"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
   mount_target_tags  = {}

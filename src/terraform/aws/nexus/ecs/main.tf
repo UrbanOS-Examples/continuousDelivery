@@ -67,7 +67,7 @@ module "ecs_load_balancer" {
   #to issue these we need to set up a certificate manager. To avaoid nother
   #wild goose chase AWS style I simply compied the module and changed the protocol to HTTP
 
-  source = "../modules/elb"
+  source = "../../modules/elb"
   version = "0.1.10"
 
   region = "${var.region}"
