@@ -38,15 +38,6 @@ data "terraform_remote_state" "efs" {
   }
 }
 
-module "mount_targets" {
-  source = "../modules/efs_mount_target"
-  name = "stuff"
-  vpc_id = "${data.terraform_remote_state.vpc.id}"
-  mount_target_tags  = "${var.mount_target_tags}"
-  subnets = "${data.terraform_remote_state.vpc.private_subnets.id}"
-  efs_id = "${data.terraform_remote_state.efs.efs_id}"
-}
-
 module "cluster" {
   source = "infrablocks/ecs-cluster/aws"
   version = "0.2.5"
@@ -68,6 +59,7 @@ module "cluster" {
   cluster_maximum_size =  "${var.cluster_maximum_size}"
   cluster_desired_capacity =  "${var.cluster_desired_capacity}"
   allowed_cidrs =  "${var.allowed_cidrs}"
+
 }
 
 module "ecs_load_balancer" {
@@ -128,7 +120,7 @@ module "service" {
   service_volumes = [
     {
       name = "${var.directory_name}"
-      host_path = "/efs/${var.directory_name}"
+      host_path = "/efs"
     }
   ]
 
@@ -136,4 +128,4 @@ module "service" {
   ecs_cluster_service_role_arn = "${module.cluster.service_role_arn}"
 }
 
-#todo: EFS, MountTarget, userData, scaling policy
+#todo: scaling policy, consistent tags
