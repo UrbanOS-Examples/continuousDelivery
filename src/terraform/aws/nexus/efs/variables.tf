@@ -6,18 +6,16 @@ variable "region" {
 
 variable "efs_name" {
   description = "EFS name"
+  default = "nexus"
 }
 
 variable "efs_mode" {
   description = "xfer mode:  generalPurpose OR maxIO"
+  default = "generalPurpose"
 }
 
 variable "efs_encrypted" {
   description = "Is EFS encrypted?  true/false"
   type = "string"
-}
-
-variable "prevent_destroy" {
-  description = "The switch to override prevent destroy"
-  default = "true"
+  default = true
 }
