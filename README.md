@@ -63,22 +63,22 @@ Goals:
     * other docker containers start as siblings - Jenkins has a docker plugin. How can we use it?
   * Terraform
     * EFS for Jenkins - done
-    * move Jenkins to private subnets   
+    * move Jenkins to private subnets   - done  
     * tune number of instances to start
     * implements scale up and scale down policies
     * configure Route 53
     * migrate ELB from classic
     * restrict Jenkins access by IP?
     * extract LB variables - done
-    * use EC2 image that has up to date ECS agent
+    * use EC2 image that has up to date ECS agent - done
   * Nexus
     * Nexus confirmation of EFS persistence by restarting Nexus container and confirming configuration remains - done
     * Nexus setup of LDAP
     * Change Nexus local admin password from its default setting - DONE
-    * Change Nexus script to same approach use by Jenkins - DONE
+    * Change Nexus script to same approach used by Jenkins - DONE
   * Jenkins file for sample repository - pick monitoring
     * runs docker inspec tests in a sibling docker container
     * publishes to Nexus if successful    
   * Other  
-    * Resolve conflict with elb security group name.
+    * Resolve conflict with the elb security group name.
     * Consider an approach where security groups are reusable. E.g. use same security groups for Delivery Pipeline load balancers    

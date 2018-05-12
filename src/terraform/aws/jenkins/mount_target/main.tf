@@ -1,4 +1,4 @@
-provider "aws" {
+, "environment" = "${var.environment}"provider "aws" {
   region = "${var.region}"
 }
 
@@ -42,7 +42,7 @@ module "mount_targets" {
   source = "../../modules/efs_mount_target"
   sg_name = "jenkins-data"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  mount_target_tags  = {"name" = "jenkins"}
+  mount_target_tags  = {"name" = "jenkins", "environment" = "${var.environment}"}
   subnets = "${data.terraform_remote_state.vpc.private_subnets}"
   efs_id = "${data.terraform_remote_state.efs.efs_id}"
 }
