@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ] ; then
+  echo "USAGE:  $0 <workspace> <apply|destroy>"
+  exit 1
+fi
+export base=$(pwd)
+export workspace=$1
+export action=$2
+export tf=$base/../../tf.sh
+if [ $action == "destroy" ] ; then
+   export items=$(cat order.txt | sed '1!G;h;$!d')
+else
+   export items=$(cat order.txt)
+fi
+
+for item in $items ; do
+   echo $item
+   cd $base/$item && terraform init && $tf $workspace $action --lock=false -auto-approve
+   res=`echo $? | awk '{print $1}'`
+   echo "Result: $item -> $res"
+   if [ "$res" -ne 0 ] ; then
+      echo "Unable to process:  $workspace for directory: $item"
+      exit 1
+   fi
+done
+
