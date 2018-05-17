@@ -2,25 +2,18 @@ provider "aws" {
   region = "${var.region}"
 }
 
-# module "iam_user" {
-#   source = "terraform-aws-modules/iam/aws//modules/iam-user"
-
-#   count                   = "${length(var.users)}"
-#   name                    = "${var.users[count.index]}"
-#   force_destroy           = true
-#   pgp_key                 = "keybase:test"
-#   password_reset_required = false
-# }
-
 resource "aws_iam_user" "user" {
-  name          = "test-user"
+  count         = "${length(var.users)}"
+  name          = "${var.users[count.index]}"
   force_destroy = true
 }
 
 resource "aws_iam_user_login_profile" "user-login-profile" {
-  user                    = "${aws_iam_user.user.name}"
+  count                   = "${length(var.users)}"
+  user                    = "${var.users[count.index]}"
   pgp_key                 = "keybase:test"
   password_reset_required = true
+  depends_on              = ["aws_iam_user.user"]
 }
 
 resource "aws_iam_group_membership" "superuser_membership" {
