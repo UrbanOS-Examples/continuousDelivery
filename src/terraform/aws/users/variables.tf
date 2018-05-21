@@ -6,7 +6,15 @@ variable "region" {
 variable "users" {
   description = "List of users"
   type        = "list"
-  default     = ["test.user1", "test.user2"]
+
+  default = [
+    "cmcclellan",
+    "bcromer",
+    "jdenen",
+    "ksmith",
+    "emoore",
+    "jmorris",
+  ]
 }
 
 variable "pgp_key" {
