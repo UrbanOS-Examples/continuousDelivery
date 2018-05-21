@@ -1,0 +1,17 @@
+version: '3'
+services:
+  worker:
+    image: scos-jenkins-worker
+    build: ./worker/
+    environment:
+      JENKINS_URL: ${JENKINS_URL}
+      JENKINS_AGENT_NAME: ${JENKINS_AGENT_NAME}
+      JENKINS_SECRET: ${JENKINS_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  jenkins:
+    image: scos-jenkins-master
+    build: ./master/
+    ports:
+      - "8080:8080" #jenkins web
+      - "50000:50000" #jenkins JNLP slaves

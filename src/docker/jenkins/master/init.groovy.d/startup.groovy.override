@@ -8,6 +8,7 @@ import com.cloudbees.jenkins.plugins.amazonecs.ECSCloud
 import com.cloudbees.jenkins.plugins.amazonecs.ECSTaskTemplate
 import hudson.model.*
 import hudson.plugins.gradle.*
+import hudson.security.*
 import hudson.tools.*
 import jenkins.model.*
 import jenkins.model.Jenkins
@@ -17,13 +18,26 @@ import java.util.logging.Logger
 
 Logger.global.info("[Running] startup script")
 
-configureJenkinsURL()
 configureSecurity()
+configureJenkinsURL()
 configureCloud()
 
 Jenkins.instance.save()
 
 Logger.global.info("[Done] startup script")
+
+private configureSecurity() {
+    def jenkins = Jenkins.get()
+    jenkins.setAuthorizationStrategy(new FullControlOnceLoggedInAuthorizationStrategy())
+
+    def allowSignUp = true
+    jenkins.setSecurityRealm(new HudsonPrivateSecurityRealm(allowSignUp))
+
+    //this port is fixed so it can be configured in the security group
+    jenkins.setSlaveAgentPort(50000)
+
+    jenkins.save()
+}
 
 private configureJenkinsURL() {
     String jenkinsURL = queryJenkinsURL()
@@ -31,12 +45,6 @@ private configureJenkinsURL() {
     def config = JenkinsLocationConfiguration.get()
     config.url = jenkinsURL
     config.save()
-}
-
-private void configureSecurity() {
-    Jenkins.instance.disableSecurity()
-    //this port is fixed so it can be configured in the security group
-    Jenkins.instance.setSlaveAgentPort(50000)
 }
 
 private getClientConfiguration() {
