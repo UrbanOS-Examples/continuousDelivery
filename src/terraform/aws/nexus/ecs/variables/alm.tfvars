@@ -18,13 +18,13 @@ domain_name = "deliveryPipeline.smartcolumbusos.com"
 public_zone_id = "Z2TQLOWLDABB3W"
 private_zone_id = "Z3KXSBDSLMD8L4"
 allow_lb_cidrs = ["0.0.0.0/0"]
-include_public_dns_record = "yes"
+include_public_dns_record = "no"
 include_private_dns_record = "no"
 expose_to_public_internet = "yes"
 
 #Service variables
 service_name = "nexus"
-service_image = "647770347641.dkr.ecr.us-east-2.amazonaws.com/jeff-repo"
+service_image = "sonatype:nexus3"
 service_task_container_definitions="templates/task-definition.json.tpl"
 attach_to_load_balancer = "yes"
 cpu = 256
