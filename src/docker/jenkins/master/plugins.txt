@@ -43,7 +43,7 @@ envinject:2.1.5
 ssh-credentials:1.13
 cloudbees-folder:6.3
 blueocean-i18n:1.4.2
-amazon-ecs:1.11
+amazon-ecs:1.14
 blueocean-events:1.4.2
 config-file-provider:2.18
 blueocean-dashboard:1.4.2
