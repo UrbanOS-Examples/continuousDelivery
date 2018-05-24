@@ -4,12 +4,12 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-   bucket = "scos-terraform-state"
+   bucket = "scos-alm-terraform-state"
    key    = "nexus_efs_mount_target"
    region = "us-east-2"
    dynamodb_table="terraform_lock"
    encrypt = "true"
-   role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+   role_arn = "arn:aws:iam::199837183662:role/UpdateTerraform"
  }
 }
 
@@ -19,10 +19,10 @@ data "terraform_remote_state" "vpc" {
  workspace = "${terraform.workspace}"
 
  config {
-   bucket = "scos-terraform-state"
+   bucket = "scos-alm-terraform-state"
    key    = "vpc"
    region = "us-east-2"
-   role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+   role_arn = "arn:aws:iam::199837183662:role/UpdateTerraform"
  }
 }
 
@@ -31,10 +31,10 @@ data "terraform_remote_state" "efs" {
   workspace = "${terraform.workspace}"
 
   config {
-    bucket   = "scos-terraform-state"
+    bucket   = "scos-alm-terraform-state"
     key      = "nexus_efs"
     region   = "us-east-2"
-    role_arn = "arn:aws:iam::784801362222:role/UpdateTerraform"
+    role_arn = "arn:aws:iam::199837183662:role/UpdateTerraform"
   }
 }
 
