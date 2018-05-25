@@ -5,6 +5,10 @@
             "Action": [
                 "ecs:*",
                 "elasticloadbalancing:Describe*",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ],
