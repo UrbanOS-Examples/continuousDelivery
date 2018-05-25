@@ -1,32 +1,29 @@
-# Jenkins
+# Jenkins!
 
-We're using JNLP workers that are spun up on demand by the [Amazon EC2 Service Plugin](https://github.com/jenkinsci/amazon-ecs-plugin).
-The worker docker image is capable of building and running peer docker containers.
-Their purpose is to build and run images provided by our microservices.
-Microservices are responsible for providing their own containerized build environment.
+## How to build the Docker images and push it to ECR
 
-The first time Jenkins master is brought online, you must navigate to ${jenkins_url}/configure
-and provide an access key for the cluster, as well as the cluster arn to the plugin.
+The Elastic Container Registry (ECR) for the Application Lifecycle Managment (ALM) cluster is here: 
+https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/repositories/scos:jenkins-master#images;tagStatus=ALL
 
-## Testing Locally
+Click the "View Push Commands" button for instructions
 
-To test the worker image:
+## How to run the terraform scripts that deploy Jenkins to AWS
 
-- Bring up jenkins master
++ Make sure you're in the ALM workspace for all these commands. The workspaces are set per directory. Use `terraform workspace list` to check which one you're in, and `terraform workspace select alm` to switch to the ALM workspace.
 
-    ```bash
-    docker compose up -d jenkins
-    ```
++ Make sure your AWS credentials work for the ALM VPC.
 
-- Sign up and create an account
-- Go to http://localhost:8080/computer/new and create a new worker node.
-- Once created, navigate back to the node and obtain the secret.
-- Update the .env file in this directory with the worker name and secret.
-- Bring up the worker image
++ The terraform scripts need to be built in the following directories in the following order: `efs`, `mount_target` and `ecs`, the first time Jenkins is deployed. Afterwards, any changes to Jenkins can be deployed by running the commands only in `ecs`.  The commands are as follows:
+  + `terraform init`
+  + `terraform plan -var-file=variables/alm.tfvars -out <DIRECTORYNAME>.plan`
+  + `terraform apply <DIRECTORYNAME>.plan`
 
-    ```bash
-    docker-compose up -d worker
-    ```
+## How to find the Jenkins URL
 
-- Run the `worker_test` job to verify worker image.
+The URL you're looking for is the URL for the load balancer in front of the EC2 instance that Jenkins is on.
 
++ go to the [AWS url that lists clusters](https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/clusters) 
++ click on the name of the Jenkins cluster, `delivery-pipeline-alm-jenkins-cluster`
++ click on the name of the Jenkins service, `jenkins-master`
++ In the Details tab, click on the link under 'Load Balancer Name'
++ The URl next to 'DNS Name' is the address that Jenkins is on.

@@ -16,6 +16,10 @@
       {
         "sourceVolume": "${directory_name}",
         "containerPath": "/var/${directory_name}"
+      },
+      {
+        "sourceVolume": "docker-socket",
+        "containerPath": "/var/run/docker.sock"
       }
     ],
     "logConfiguration": {

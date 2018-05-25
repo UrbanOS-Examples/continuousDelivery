@@ -120,7 +120,11 @@ module "jenkins_service" {
     {
       name = "${var.directory_name}"
       host_path = "/efs/${var.directory_name}"
-    }
+    },
+    {
+      name      = "docker-socket"
+      host_path = "/var/run/docker.sock"
+    },
   ]
 
   ecs_cluster_id = "${module.jenkins_cluster.cluster_id}"

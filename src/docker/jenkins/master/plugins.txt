@@ -87,3 +87,8 @@ aws-credentials:1.23
 display-url-api:2.2.0
 pipeline-input-step:2.8
 mercurial:2.3
+build-monitor-plugin:1.12+build.201805070054
+ansicolor:0.5.2
+greenballs:1.15
+timestamper:1.8.10
+amazon-ecr:1.6

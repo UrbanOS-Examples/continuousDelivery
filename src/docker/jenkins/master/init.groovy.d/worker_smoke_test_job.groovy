@@ -8,7 +8,7 @@ Jenkins.instance.createProjectFromXML("worker_test", new ByteArrayInputStream(
   <keepDependencies>false</keepDependencies>
   <properties/>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.45">
-    <script>node(&apos;worker1&apos;) {
+    <script>node(&apos;master&apos;) {
     def customImage
    stage(&quot;build docker&quot;)
    {

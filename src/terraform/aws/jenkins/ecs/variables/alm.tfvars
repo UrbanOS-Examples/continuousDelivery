@@ -23,8 +23,11 @@ expose_to_public_internet = "yes"
 
 #Service variables
 service_name = "jenkins-master"
-service_image = "mihailrc/jenkins"
-service_task_container_definitions="templates/task-definition.json.tpl"
+
+service_image = "199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/jenkins-master:latest"
+
+service_task_container_definitions = "templates/task-definition.json.tpl"
+
 attach_to_load_balancer = "yes"
 memory = 1024
 directory_name = "jenkins_home"
