@@ -19,7 +19,7 @@ private_zone_id = ""
 allow_lb_cidrs = ["0.0.0.0/0"]
 include_public_dns_record = "no"
 include_private_dns_record = "no"
-expose_to_public_internet = "yes"
+expose_to_public_internet = "no"
 
 #Service variables
 service_name = "jenkins-master"
