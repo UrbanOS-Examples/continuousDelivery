@@ -13,7 +13,6 @@ node('master') {
         stage('Test') {
             docker.image("scos/jenkins_relay:${GIT_COMMIT_HASH}")
                 .inside('-e MIX_ENV=test') {
-                    sh('mix deps.get')
                     sh('mix test')
                 }
         }
