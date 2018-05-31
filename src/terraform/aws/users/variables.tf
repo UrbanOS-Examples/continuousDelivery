@@ -10,10 +10,21 @@ variable "users" {
   default = [
     "cmcclellan",
     "bcromer",
-    "jdenen",
     "ksmith",
     "emoore",
     "jmorris",
+    "jlutz",
+    "brogers",
+    "smillard",
+    "rsepulveda",
+    "abhagat",
+    "rboyapati",
+    "cyeater",
+    "afreeman",
+    "oqi",
+    "aganesh",
+    "bschwanitz",
+    "testuser"
   ]
 }
 
