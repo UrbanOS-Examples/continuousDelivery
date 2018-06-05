@@ -37,6 +37,11 @@ resource "aws_iam_group_policy_attachment" "dev-group-policy-IAMUserChangePasswo
   policy_arn = "arn:aws:iam::aws:policy/IAMUserChangePassword"
 }
 
+resource "aws_iam_group_policy_attachment" "dev-group-policy-ECR-ReadOnly" {
+  group      = "${aws_iam_group.dev-group.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
 resource "aws_iam_policy" "policy-dev-assumed-role" {
   name	     = "dev_assumed_roles_policy"
   description= "This policy allows devs to assume roles in other environments"
@@ -53,9 +58,9 @@ resource "aws_iam_policy" "policy-dev-assumed-role" {
             ],
             "Resource": [
                 "arn:aws:iam::068920858268:role/admin_role",
-		"arn:aws:iam::073132350570:role/dev_view_only_role",
-		"arn:aws:iam::647770347641:role/dev_view_only_role",
-		"arn:aws:iam::784801362222:role/dev_view_only_role"
+                "arn:aws:iam::073132350570:role/dev_view_only_role",
+                "arn:aws:iam::647770347641:role/dev_view_only_role",
+                "arn:aws:iam::784801362222:role/dev_view_only_role"
             ]
         }
     ]
