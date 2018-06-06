@@ -1,3 +1,0 @@
-efs
-mount_target
-ecs
