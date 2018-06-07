@@ -1,10 +1,12 @@
 version: '3'
 services:
   jenkins:
-    image: scos/jenkins-master
+    image: scos/jenkins-master:latest
     build: ./master/
     ports:
       - "8080:8080" #jenkins web
       - "50000:50000" #jenkins JNLP slaves
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.minikube:/Users/oasis/.minikube
+    network_mode: "host"

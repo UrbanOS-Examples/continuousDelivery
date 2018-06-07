@@ -7,6 +7,9 @@ https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/repositories
 
 Click the "View Push Commands" button for instructions
 
+You only have to do this in order to bootstrap the system.
+Once you have a running Jenkins, the Jenkinsfile in this repository will build and push an image on every commit.
+
 ## How to run the terraform scripts that deploy Jenkins to AWS
 
 + Make sure you're in the ALM workspace for all these commands. The workspaces are set per directory. Use `terraform workspace list` to check which one you're in, and `terraform workspace select alm` to switch to the ALM workspace.
@@ -27,3 +30,25 @@ The URL you're looking for is the URL for the load balancer in front of the EC2 
 + click on the name of the Jenkins service, `jenkins-master`
 + In the Details tab, click on the link under 'Load Balancer Name'
 + The URl next to 'DNS Name' is the address that Jenkins is on.
+
+## Running Locally Alongside Minikube
+
+The docker-compose file in this directory puts us on the host network, so that we can simulate the way the ALM network interacts with other VPCs.
+
+Share minikube's docker daemon with your host.
+
+```bash
+eval $(minikube docker-env)
+```
+
+Bring up Jenkins
+
+```bash
+docker-compose up -d
+```
+
+Jenkins will be running on port 8080 of minikube's IP address.
+
+```bash
+minikube ip
+```

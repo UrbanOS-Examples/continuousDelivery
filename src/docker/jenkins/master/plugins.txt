@@ -67,7 +67,7 @@ git-server:1.7
 workflow-scm-step:2.6
 pubsub-light:1.12
 bouncycastle-api:2.16.2
-credentials-binding:1.15
+credentials-binding:1.16
 jquery-detached:1.2.1
 branch-api:2.0.18
 matrix-project:1.12
@@ -92,3 +92,4 @@ ansicolor:0.5.2
 greenballs:1.15
 timestamper:1.8.10
 amazon-ecr:1.6
+kubernetes-cd:0.2.2
