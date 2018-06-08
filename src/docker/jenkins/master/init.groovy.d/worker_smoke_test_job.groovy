@@ -1,6 +1,6 @@
 import jenkins.model.*
 
-Jenkins.instance.createProjectFromXML("worker_test", new ByteArrayInputStream(
+Jenkins.instance.createProjectFromXML("Self Test", new ByteArrayInputStream(
 '''<?xml version='1.1' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.17">
   <actions/>
