@@ -1,6 +1,7 @@
 def repositories = [
     'cota-streaming-producer', 
-    'cota-streaming-consumer'
+    'cota-streaming-consumer',
+    'cota-streaming-ui'
 ]
 
 repositories.each { repo ->
