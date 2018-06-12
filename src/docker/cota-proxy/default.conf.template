@@ -1,0 +1,13 @@
+server {
+    listen       80;
+    server_name  localhost;
+
+    location /socket/ {
+        proxy_pass http://${WEBSOCKET_HOST}:${WEBSOCKET_PORT}/socket/;
+    }
+
+    location / {
+        proxy_pass http://${UI_HOST}:${UI_PORT};
+    }
+}
+
