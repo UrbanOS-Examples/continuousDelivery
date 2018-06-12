@@ -20,13 +20,23 @@ node('master') {
             }
         }
 
+        def buildAndPushDocker = { imageName ->
+            docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+                def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
+                image.push()
+                image.push('latest')
+            }
+        }
+
         dir('src/docker/jenkins/master') {
             stage('Jenkins Master Build') {
-                docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
-                    def image = docker.build("scos/jenkins-master:${GIT_COMMIT_HASH}")
-                    image.push()
-                    image.push('latest')
-                }
+                buildAndPushDocker("scos/jenkins-master")
+            }
+        }
+
+        dir('src/docker/cota-proxy') {
+            stage('COTA proxy build') {
+                buildAndPushDocker("scos/cota-proxy")
             }
         }
     }
