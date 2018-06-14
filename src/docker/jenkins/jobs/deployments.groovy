@@ -6,9 +6,6 @@ def repositories = [
 
 repositories.each { repo ->
     pipelineJob("deploy-${repo}") {
-        triggers {
-        	scm('H/2 * * * *')
-    	}
         properties {
             parameters {
                 parameterDefinitions {
