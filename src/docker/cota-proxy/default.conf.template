@@ -4,6 +4,9 @@ server {
 
     location /socket/ {
         proxy_pass http://${WEBSOCKET_HOST}:${WEBSOCKET_PORT}/socket/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
     }
 
     location / {
