@@ -25,16 +25,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gnupg2 \
     software-properties-common \
-    # add docker-ce repository
+    # add docker-ce and kubectl repositories
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
     && add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/debian \
     $(lsb_release -cs) \
     stable" \
-    # the actual tools we need
     && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
     && add-apt-repository \
     "deb http://apt.kubernetes.io/ kubernetes-xenial main" \
+    # the actual tools we need
     && apt-get update && apt-get install -y --no-install-recommends \
         docker-ce \
         ruby-full \
