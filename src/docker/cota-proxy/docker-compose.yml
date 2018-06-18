@@ -1,0 +1,71 @@
+---
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:4.1.0
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    extra_hosts:
+      - "moby:127.0.0.1"
+  kafka:
+    image: confluentinc/cp-kafka:4.1.0
+    ports:
+      - 9092:9092
+      - 9093:9093
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: CLUSTER://kafka:9093,LOCAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CLUSTER:PLAINTEXT,LOCAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: CLUSTER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    extra_hosts:
+      - "moby:127.0.0.1"
+  producer:
+    image: 199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/cota-streaming-producer
+    depends_on:
+      - kafka
+    environment:
+      COTA_DATA_TOPIC: "cota-vehicle-positions"
+      COTA_WAIT: "10000" #milliseconds
+      COTA_URL: "http://realtime.cota.com/TMGTFSRealTimeWebService/Vehicle/VehiclePositions.pb"
+      KAFKA_BROKERS: "kafka:9093"
+  consumer:
+    image: 199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/cota-streaming-consumer
+    depends_on:
+      - kafka
+      - producer
+    ports:
+      - 4000:4000
+    environment:
+      MIX_ENV: "dev"
+      COTA_DATA_TOPIC: "cota-vehicle-positions"
+      KAFKA_BROKERS: "kafka:9093"
+  ui:
+    image: 199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/cota-streaming-ui
+    depends_on:
+      - consumer
+    ports:
+      - 8080:80
+    environment:
+      env: dev
+  proxy:
+    image: scos/cota-proxy
+    build:
+      context: .
+    depends_on:
+      - consumer
+      - ui
+    ports:
+      - 8181:80
+    environment:
+      WEBSOCKET_HOST: consumer
+      WEBSOCKET_PORT: 4000
+      UI_HOST: ui
+      UI_PORT: 80
+
