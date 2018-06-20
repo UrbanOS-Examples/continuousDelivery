@@ -1,6 +1,7 @@
 def jenkinsfiles = [
     'destroy-dev',
-    'kubeconfig'
+    'kubeconfig',
+    'deploy-dev'
 ]
 
 jenkinsfiles.each { file ->
