@@ -7,24 +7,25 @@ node('master') {
                 returnStdout: true
             ).trim()
         }
-        dir('src/docker/jenkins_relay') {
-            stage('Relay Build') {
-                buildAndPushDocker('scos/jenkins_relay')
-            }
-            stage('Relay Test') {
-                docker.image("scos/jenkins_relay:${GIT_COMMIT_HASH}")
-                    .inside('-e MIX_ENV=test') {
-                        sh('mix deps.get')
-                        sh('mix test')
-                    }
-            }
-        }
 
         def buildAndPushDocker = { imageName ->
             docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
                 def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
                 image.push()
                 image.push('latest')
+            }
+        }
+
+        dir('src/docker/jenkins_relay') {
+            stage('Relay Build') {
+                buildAndPushDocker('scos/jenkins-relay')
+            }
+            stage('Relay Test') {
+                docker.image("scos/jenkins-relay:${GIT_COMMIT_HASH}")
+                    .inside('-e MIX_ENV=test') {
+                        sh('mix deps.get')
+                        sh('mix test')
+                    }
             }
         }
 
