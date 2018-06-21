@@ -4,22 +4,32 @@ def jenkinsfiles = [
     'deploy-dev'
 ]
 
+def repository = { pipeline_file ->
+    return { 
+        scm {
+            git {
+                remote {
+                    url("git@github.com:SmartColumbusOS/common.git")
+                    credentials('GitHub')
+                }
+                branch('*/master')
+            }
+        }
+        scriptPath("${pipeline_file}")
+        lightweight()
+    }
+}
+
 jenkinsfiles.each { file ->
     pipelineJob(file) {
         definition {
-            cpsScm {
-                scm {
-                    git {
-                        remote {
-                            url("git@github.com:SmartColumbusOS/common.git")
-                            credentials('GitHub')
-                        }
-                        branch('*/master')
-                    }
-                }
-                scriptPath("env/${file}.Jenkinsfile")
-                lightweight()
-            }
+            cpsScm repository("env/${file}.Jenkinsfile")
         }
+    }
+}
+
+pipelineJob('deploy-proxy-cluster') {
+    definition {
+        cpsScm repository("alm/proxy-cluster.Jenkinsfile")
     }
 }
