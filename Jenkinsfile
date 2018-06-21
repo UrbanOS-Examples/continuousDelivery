@@ -20,13 +20,6 @@ node('master') {
             stage('Relay Build') {
                 buildAndPushDocker('scos/jenkins-relay')
             }
-            stage('Relay Test') {
-                docker.image("scos/jenkins-relay:${GIT_COMMIT_HASH}")
-                    .inside('-e MIX_ENV=test') {
-                        sh('mix deps.get')
-                        sh('mix test')
-                    }
-            }
         }
 
         dir('src/docker/jenkins/master') {
