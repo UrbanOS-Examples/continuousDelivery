@@ -30,7 +30,7 @@ private configureSecurity() {
     def jenkins = Jenkins.get()
     jenkins.setAuthorizationStrategy(new FullControlOnceLoggedInAuthorizationStrategy())
 
-    def allowSignUp = true
+    def allowSignUp = false
     jenkins.setSecurityRealm(new HudsonPrivateSecurityRealm(allowSignUp))
 
     //this port is fixed so it can be configured in the security group
