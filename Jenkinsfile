@@ -9,7 +9,7 @@ node('master') {
         }
         dir('src/docker/jenkins_relay') {
             stage('Relay Build') {
-                docker.build("scos/jenkins_relay:${GIT_COMMIT_HASH}")
+                buildAndPushDocker('scos/jenkins_relay')
             }
             stage('Relay Test') {
                 docker.image("scos/jenkins_relay:${GIT_COMMIT_HASH}")
