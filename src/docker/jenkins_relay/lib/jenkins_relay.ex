@@ -7,6 +7,6 @@ defmodule JenkinsRelay do
   plug(:dispatch)
 
   match _ do
-    send_resp(conn, 404, "oops!")
+    send_resp(conn, 200, "It works!")
   end
 end

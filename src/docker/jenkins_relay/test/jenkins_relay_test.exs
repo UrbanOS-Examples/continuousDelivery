@@ -62,6 +62,6 @@ defmodule JenkinsRelayTest do
       ])
 
     assert FakeServer.hits() == 0
-    assert response.status_code == 404
+    assert response.status_code == 200
   end
 end
