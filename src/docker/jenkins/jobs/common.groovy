@@ -1,6 +1,5 @@
 def jenkinsfiles = [
     'destroy-dev',
-    'kubeconfig',
     'deploy-dev'
 ]
 
