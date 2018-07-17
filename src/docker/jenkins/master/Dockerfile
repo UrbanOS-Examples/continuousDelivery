@@ -17,14 +17,17 @@ USER root
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	# need zip to install terraform later
-	zip \
-	# install dependencies for adding package repository
+    # need zip to install terraform later
+    zip \
+    # install dependencies for adding package repository
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg2 \
     software-properties-common \
+    python-pip \
+    jq \
+    && pip install awscli \
     # add docker-ce and kubectl repositories
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
     && add-apt-repository \
