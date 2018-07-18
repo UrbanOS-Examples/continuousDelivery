@@ -4,7 +4,7 @@ def jenkinsfiles = [
 ]
 
 def repository = { pipeline_file ->
-    return { 
+    return {
         scm {
             git {
                 remote {
@@ -29,6 +29,6 @@ jenkinsfiles.each { file ->
 
 pipelineJob('deploy-proxy-cluster') {
     definition {
-        cpsScm repository("alm/proxy-cluster.Jenkinsfile")
+        cpsScm repository("Jenkinsfile.proxy-cluster")
     }
 }
