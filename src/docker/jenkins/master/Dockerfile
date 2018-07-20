@@ -24,13 +24,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
         gnupg2 \
         software-properties-common \
-    # add docker-ce and kubectl repositories
+    # add docker-ce repository
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
     && add-apt-repository \
-        "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
-    && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-    && add-apt-repository \
-        "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+        "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 
 # Install the actual apt packages we need
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -38,7 +35,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ruby-full \
         build-essential \
         jq \
-        kubectl \
         python3 \
         python3-pip \
         python3-setuptools \
@@ -58,6 +54,9 @@ RUN gem install --no-ri --no-doc \
 # Install static binaries
 RUN wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip \
     && unzip terraform_0.11.7_linux_amd64.zip -d /usr/bin/
+
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/kubectl \
+    && install kubectl /usr/bin
 
 RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws \
     && install heptio-authenticator-aws /usr/bin
