@@ -1,7 +1,9 @@
+def scmVars
+
 node('master') {
     ansiColor('xterm') {
         stage('Checkout') {
-            checkout scm
+            scmVars = checkout scm
             GIT_COMMIT_HASH = sh (
                 script: 'git rev-parse HEAD',
                 returnStdout: true
@@ -9,10 +11,13 @@ node('master') {
         }
 
         def buildAndPushDocker = { imageName ->
-            docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
-                def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
-                image.push()
-                image.push('latest')
+            def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
+
+            if (scmVars.GIT_BRANCH == 'master') {
+                docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+                    image.push()
+                    image.push('latest')
+                }
             }
         }
 
