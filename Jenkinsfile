@@ -1,6 +1,5 @@
 def relayImage
 def masterImage
-def proxyImage
 
 pipeline {
     agent any
@@ -31,9 +30,6 @@ pipeline {
                     dir('src/docker/jenkins/master') {
                         masterImage = docker.build("scos/jenkins-master:${GIT_COMMIT_HASH}")
                     }
-                    dir('src/docker/cota-proxy') {
-                        proxyImage = docker.build("scos/cota-proxy:${GIT_COMMIT_HASH}")
-                    }
                 }
             }
         }
@@ -49,8 +45,6 @@ pipeline {
                         relayImage.push('latest')
                         masterImage.push()
                         masterImage.push('latest')
-                        proxyImage.push()
-                        proxyImage.push('latest')
                     }
                 }
             }
