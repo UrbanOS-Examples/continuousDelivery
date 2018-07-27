@@ -27,11 +27,5 @@ node('master') {
                 buildAndPushDocker("scos/jenkins-master")
             }
         }
-
-        dir('src/docker/cota-proxy') {
-            stage('COTA proxy build') {
-                buildAndPushDocker("scos/cota-proxy")
-            }
-        }
     }
 }

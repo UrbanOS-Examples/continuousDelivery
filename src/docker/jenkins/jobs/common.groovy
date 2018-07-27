@@ -26,9 +26,3 @@ jenkinsfiles.each { file ->
         }
     }
 }
-
-pipelineJob('deploy-proxy-cluster') {
-    definition {
-        cpsScm repository("Jenkinsfile.proxy-cluster")
-    }
-}
