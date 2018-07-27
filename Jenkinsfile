@@ -1,30 +1,52 @@
-node('master') {
-    ansiColor('xterm') {
+def relayImage
+def masterImage
+
+pipeline {
+    agent any
+
+    options {
+        ansiColor('xterm')
+    }
+    stages {
+
         stage('Checkout') {
-            checkout scm
-            GIT_COMMIT_HASH = sh (
-                script: 'git rev-parse HEAD',
-                returnStdout: true
-            ).trim()
-        }
-
-        def buildAndPushDocker = { imageName ->
-            docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
-                def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
-                image.push()
-                image.push('latest')
+            steps {
+                checkout scm
+                script {
+                    GIT_COMMIT_HASH = sh (
+                        script: 'git rev-parse HEAD',
+                        returnStdout: true
+                    ).trim()
+                }
             }
         }
 
-        dir('src/docker/jenkins_relay') {
-            stage('Relay Build') {
-                buildAndPushDocker('scos/jenkins-relay')
+        stage('Build') {
+            steps {
+                script {
+                    dir('src/docker/jenkins_relay') {
+                        relayImage = docker.build("scos/jenkins-relay:${GIT_COMMIT_HASH}")
+                    }
+                    dir('src/docker/jenkins/master') {
+                        masterImage = docker.build("scos/jenkins-master:${GIT_COMMIT_HASH}")
+                    }
+                }
             }
         }
 
-        dir('src/docker/jenkins/master') {
-            stage('Jenkins Master Build') {
-                buildAndPushDocker("scos/jenkins-master")
+        stage('Publish') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+                        relayImage.push()
+                        relayImage.push('latest')
+                        masterImage.push()
+                        masterImage.push('latest')
+                    }
+                }
             }
         }
     }
