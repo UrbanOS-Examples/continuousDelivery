@@ -1,0 +1,17 @@
+FROM jenkinsci/jnlp-slave:3.19-1
+
+ARG kubectl_version=1.10.3
+ARG helm_version=2.9.1
+
+USER root
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/${kubectl_version}/2018-06-05/bin/linux/amd64/kubectl \
+    && install kubectl /usr/bin
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/${kubectl_version}/2018-06-05/bin/linux/amd64/heptio-authenticator-aws \
+    && install heptio-authenticator-aws /usr/bin
+RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
+    && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
+    && install linux-amd64/helm /usr/bin
+USER jenkins
+
+RUN kubectl version --client \
+    && helm version --client

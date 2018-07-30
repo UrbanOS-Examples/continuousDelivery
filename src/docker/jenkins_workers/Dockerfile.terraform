@@ -1,8 +1,10 @@
-FROM hashicorp/terraform:0.11.7 as terraform
-
-
 FROM jenkinsci/jnlp-slave:3.19-1
 
-COPY --from=terraform /bin/terraform /bin/terraform
+ARG terraform_version=0.11.7
+
+USER root
+RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip \
+    && whoami && unzip terraform_${terraform_version}_linux_amd64.zip -d /usr/bin/
+USER jenkins
 
 RUN terraform version

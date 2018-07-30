@@ -37,6 +37,9 @@ node('master') {
             stage('Jenkins Workers Build - Terraform') {
                 buildAndPushDocker("scos/jenkins-worker-terraform", "Dockerfile.terraform")
             }
+            stage('Jenkins Workers Build - Kubernetes') {
+                buildAndPushDocker("scos/jenkins-worker-kubernetes", "Dockerfile.kubernetes")
+            }
         }
     }
 }
