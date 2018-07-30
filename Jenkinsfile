@@ -10,11 +10,11 @@ node('master') {
             ).trim()
         }
 
-        def buildAndPushDocker = { imageName ->
-            def image = docker.build("${imageName}:${GIT_COMMIT_HASH}")
+        def buildAndPushDocker = { imageName, dockerFilePath="Dockerfile" ->
+            def image = docker.build("${imageName}:${GIT_COMMIT_HASH}", dockerFilePath)
 
             if (scmVars.GIT_BRANCH == 'master') {
-                docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+                docker.withRegistry("https://068920858268.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
                     image.push()
                     image.push('latest')
                 }
@@ -30,6 +30,12 @@ node('master') {
         dir('src/docker/jenkins/master') {
             stage('Jenkins Master Build') {
                 buildAndPushDocker("scos/jenkins-master")
+            }
+        }
+
+        dir('src/docker/jenkins_workers') {
+            stage('Jenkins Workers Build - Terraform') {
+                buildAndPushDocker("scos/jenkins-worker-terraform", "Dockerfile.terraform")
             }
         }
     }
