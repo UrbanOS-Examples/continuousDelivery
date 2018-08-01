@@ -1,8 +1,13 @@
 FROM jenkinsci/jnlp-slave:3.19-1
 
 ARG terraform_version=0.11.7
+ARG kubectl_version=1.10.3
 
 USER root
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/${kubectl_version}/2018-06-05/bin/linux/amd64/kubectl \
+&& install kubectl /usr/bin
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/${kubectl_version}/2018-06-05/bin/linux/amd64/heptio-authenticator-aws \
+&& install heptio-authenticator-aws /usr/bin
 RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip \
     && whoami && unzip terraform_${terraform_version}_linux_amd64.zip -d /usr/bin/
 USER jenkins
