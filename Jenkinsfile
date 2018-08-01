@@ -25,7 +25,7 @@ def buildAndPushDocker(imageName, dockerFilePath) {
     def image = docker.build("${imageName}:${env.GIT_COMMIT_HASH}", "-f ${dockerFilePath} .")
 
     if (env.BRANCH_NAME == 'master') {
-        docker.withRegistry("https://068920858268.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+        docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
             image.push()
             image.push('latest')
         }
