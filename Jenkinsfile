@@ -4,17 +4,6 @@ node('master') {
             env.GIT_COMMIT_HASH = checkout(scm).GIT_COMMIT
         }
 
-        def buildAndPushDocker = { imageName, dockerFilePath="Dockerfile" ->
-            def image = docker.build("${imageName}:${env.GIT_COMMIT_HASH}", "-f ${dockerFilePath} .")
-
-            if (env.BRANCH_NAME == 'master') {
-                docker.withRegistry("https://068920858268.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
-                    image.push()
-                    image.push('latest')
-                }
-            }
-        }
-
         dir('src/docker/jenkins/master') {
             stage('Jenkins Master Build') {
                 buildAndPushDocker("scos/jenkins-master", "Dockerfile")
@@ -28,6 +17,17 @@ node('master') {
             stage('Jenkins Workers Build - Kubernetes') {
                 buildAndPushDocker("scos/jenkins-worker-kubernetes", "Dockerfile.kubernetes")
             }
+        }
+    }
+}
+
+def buildAndPushDocker(imageName, dockerFilePath) {
+    def image = docker.build("${imageName}:${env.GIT_COMMIT_HASH}", "-f ${dockerFilePath} .")
+
+    if (env.BRANCH_NAME == 'master') {
+        docker.withRegistry("https://068920858268.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {
+            image.push()
+            image.push('latest')
         }
     }
 }
