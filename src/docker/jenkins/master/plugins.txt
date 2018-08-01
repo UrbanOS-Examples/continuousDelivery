@@ -66,6 +66,7 @@ kubernetes-cd:0.2.2
 mailer:1.21
 matrix-project:1.13
 mercurial:2.3
+monitoring:1.73.1
 pipeline-build-step:2.7
 pipeline-graph-analysis:1.6
 pipeline-input-step:2.8
