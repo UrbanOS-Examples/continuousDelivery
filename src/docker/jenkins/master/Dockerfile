@@ -48,6 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-wheel \
         # need zip to install terraform later
         zip \
+        gettext \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python packages
