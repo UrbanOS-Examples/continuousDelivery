@@ -21,4 +21,6 @@ RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform
 && unzip terraform_${terraform_version}_linux_amd64.zip -d /usr/bin/
 USER jenkins
 
-RUN terraform version && which kubectl && python3 -m botocore.session
+RUN terraform version \
+&& kubectl version --client \
+&& python3 -m botocore.session

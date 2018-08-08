@@ -11,8 +11,8 @@ node('master') {
         }
 
         dir('src/docker/jenkins_workers') {
-            stage('Jenkins Workers Build - Terraform') {
-                buildAndPushDocker("scos/jenkins-worker-terraform", "Dockerfile.terraform")
+            stage('Jenkins Workers Build - Infrastructure') {
+                buildAndPushDocker("scos/jenkins-worker-infrastructure", "Dockerfile.infrastructure")
             }
             stage('Jenkins Workers Build - Kubernetes') {
                 buildAndPushDocker("scos/jenkins-worker-kubernetes", "Dockerfile.kubernetes")
