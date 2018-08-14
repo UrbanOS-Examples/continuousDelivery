@@ -77,6 +77,7 @@ pipeline-model-definition:1.2.9
 pipeline-model-extensions:1.2.9
 pipeline-stage-step:2.3
 pipeline-stage-tags-metadata:1.2.9
+pipeline-utility-steps:2.1.0
 plain-credentials:1.4
 pubsub-light:1.12
 scm-api:2.2.7
