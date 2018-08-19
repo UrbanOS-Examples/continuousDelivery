@@ -19,6 +19,11 @@ RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-li
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
  && install linux-amd64/helm /usr/bin
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # gettext-base includes envsubst
+    gettext-base \
+    && rm -rf /var/lib/apt/lists/*
+
 USER jenkins
 
 RUN terraform version \
