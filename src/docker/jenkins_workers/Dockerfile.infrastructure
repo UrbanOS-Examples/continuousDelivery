@@ -18,12 +18,42 @@ RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform
 RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
  && install linux-amd64/helm /usr/bin
-
+# Install updated apt repositories and necessary dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # gettext-base includes envsubst
-    gettext-base \
-    jq \
+    # install dependencies for adding package repository
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg2 \
+        software-properties-common \
+    # add docker-ce repository
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
+    && add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+
+# Install the actual apt packages we need
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        docker-ce \
+        ruby-full \
+        build-essential \
+        jq \
+        python3 \
+        python3-pip \
+        python3-setuptools \
+        python3-wheel \
+        # need zip to install terraform later
+        zip \
+        gettext \
     && rm -rf /var/lib/apt/lists/*
+
+# Install python packages
+RUN pip3 install awscli
+
+# Install ruby gems
+RUN gem install --no-ri --no-doc \
+    bundler \
+    inspec
+
 
 USER jenkins
 
