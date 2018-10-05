@@ -3,6 +3,7 @@ FROM jenkinsci/jnlp-slave:3.19-1
 ARG terraform_version=0.11.7
 ARG kubectl_version=1.10.3
 ARG helm_version=2.11.0
+ARG cloudbreak_cli_version=2.7.1
 
 USER root
 
@@ -30,6 +31,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
     && add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+
+# Install the cloudbreak cli to instantiate clusters
+RUN wget -qO- https://s3-us-west-2.amazonaws.com/cb-cli/cb-cli_${cloudbreak_cli_version}_Linux_x86_64.tgz \
+ | tar xvz -C /usr/bin
 
 # Install the actual apt packages we need
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -59,4 +64,5 @@ USER jenkins
 
 RUN terraform version \
  && kubectl version --client \
- && helm version --client
+ && helm version --client \
+ && cb --version
