@@ -49,6 +49,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         # need zip to install terraform later
         zip \
         gettext \
+        netcat \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python packages
