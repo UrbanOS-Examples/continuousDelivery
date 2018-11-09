@@ -8,6 +8,8 @@ services:
       - "50000:50000" #jenkins JNLP slaves
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LDAP_BINDUSER_PWD=${LDAP_BINDUSER_PWD} #get from aws secret manager
     # uncomment to connect Jenkins to minikube
       #- ~/.minikube:/Users/oasis/.minikube
     #network_mode: "host"
