@@ -4,17 +4,16 @@ This repository contains the code to setup the Delivery Pipeline.
 
 Proposed directory structure. Serves as a starting point.
 
-### master  
-Contains Docker file to create Jenkins Master image. The list of plugins needs to be cleaned up a little bit. Also I don't know if we want to install ruby and inspec in the master. That should be part of the slave.
-Question: Do we publish this to an AWS repository for now or set up a repository in DockerHub?
+### master
 
-### slave
-Docker file to create Jenkins slave
+Contains Docker file to create Jenkins Master image with custom startup scripts.
 
-### terraform/aws
-Code to provision Jenkins in aws
+### jenkins_workers
+
+Docker file to create Jenkins worker nodes
 
 ### Useful commands
+
 Build the docker image with:
 ``docker build -t scos/jenkins .```
 
