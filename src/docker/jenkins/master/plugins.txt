@@ -63,6 +63,7 @@ jquery-detached:1.2.1
 jsch:0.1.54.2
 junit:1.24
 kubernetes-cd:0.2.2
+ldap:1.20
 mailer:1.21
 matrix-project:1.13
 mercurial:2.3

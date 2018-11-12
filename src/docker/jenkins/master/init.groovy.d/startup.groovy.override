@@ -30,8 +30,17 @@ private configureSecurity() {
     def jenkins = Jenkins.get()
     jenkins.setAuthorizationStrategy(new FullControlOnceLoggedInAuthorizationStrategy())
 
-    def allowSignUp = false
-    jenkins.setSecurityRealm(new HudsonPrivateSecurityRealm(allowSignUp))
+    def securityRealm = new LDAPSecurityRealm(
+      "ldap://iam-master.alm.internal.smartcolumbusos.com", //server
+      "dc=internal,dc=smartcolumbusos,dc=com", //rootDn
+      "cn=users,cn=accounts", //userSearchBase
+      "uid={0}", //userSearchFilter
+      "cn=groups,cn=accounts", //groupSearchBase
+      "uid=binduser,cn=users,cn=accounts,dc=internal,dc=smartcolumbusos,dc=com", //managerDN
+      System.getenv("LDAP_BINDUSER_PWD"),
+      true, //inhibitInferRootDN
+    )
+    jenkins.setSecurityRealm(securityRealm)
 
     //this port is fixed so it can be configured in the security group
     jenkins.setSlaveAgentPort(50000)
