@@ -55,6 +55,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install python packages
 RUN pip3 install awscli
 
+# Install S3 helm plugin
+RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.8.0
+
 # Install ruby gems
 RUN gem install --no-ri --no-doc \
     bundler \
