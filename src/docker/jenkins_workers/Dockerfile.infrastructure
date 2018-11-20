@@ -55,13 +55,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install python packages
 RUN pip3 install awscli
 
-# Install S3 helm plugin
-RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.8.0
-
+# Install S3 helm plugin and add repos
 RUN helm init --client-only
-RUN helm repo add scos-incubator s3://scos-helm-repository/incubator
-RUN helm repo add scos-stable s3://scos-helm-repository/stable
+RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.8.0
 RUN helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+RUN helm repo add stable https://kubernetes-charts.storage.googleapis.com
 
 # Install ruby gems
 RUN gem install --no-ri --no-doc \
