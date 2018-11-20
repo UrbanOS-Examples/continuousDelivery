@@ -60,8 +60,8 @@ RUN gem install --no-ri --no-doc \
     inspec
 
 # Install static binaries
-RUN wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip \
-    && unzip terraform_0.11.7_linux_amd64.zip -d /usr/bin/
+RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip \
+    && unzip terraform_0.11.10_linux_amd64.zip -d /usr/bin/
 
 RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/kubectl \
     && install kubectl /usr/bin
