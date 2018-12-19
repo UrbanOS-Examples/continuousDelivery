@@ -49,7 +49,7 @@ private configureSecurity() {
 }
 
 private configureJenkinsURL() {
-    String jenkinsURL = queryJenkinsURL()
+    String jenkinsURL = "https://jenkins.alm.internal.smartcolumbusos.com"
     Logger.global.info("Set Jenkins URL to $jenkinsURL")
     def config = JenkinsLocationConfiguration.get()
     config.url = jenkinsURL
@@ -60,17 +60,6 @@ private getClientConfiguration() {
     new ClientConfiguration()
 }
 
-private String queryElbDNSName() {
-    AmazonElasticLoadBalancingClient client = new AmazonElasticLoadBalancingClient(clientConfiguration);
-    def elbName = System.getenv()['ELB_NAME']
-    Logger.global.info("ELB NAME is " + elbName)
-    client.setRegion(RegionUtils.getRegion(region))
-    DescribeLoadBalancersRequest request = new DescribeLoadBalancersRequest()
-            .withLoadBalancerNames(elbName);
-    DescribeLoadBalancersResult result = client.describeLoadBalancers(request);
-    result.loadBalancerDescriptions.first().DNSName
-}
-
 private String getPrivateIP() {
     EC2MetadataUtils.networkInterfaces.first().localIPv4s.first()
 }
@@ -78,12 +67,6 @@ private String getPrivateIP() {
 private String getInstanceUrl() {
     "http://${privateIP}:8080/"
 }
-
-private String queryJenkinsURL() {
-    //assume default port 80
-    "http://${queryElbDNSName()}/"
-}
-
 
 private String getRegion() {
     EC2MetadataUtils.instanceInfo.region
