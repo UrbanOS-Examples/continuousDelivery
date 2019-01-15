@@ -1,6 +1,6 @@
 FROM jenkinsci/jnlp-slave:3.19-1
 
-ARG terraform_version=0.11.10
+ARG terraform_version=0.11.11
 ARG kubectl_version=1.10.3
 ARG helm_version=2.11.0
 ARG cloudbreak_cli_version=2.7.1
