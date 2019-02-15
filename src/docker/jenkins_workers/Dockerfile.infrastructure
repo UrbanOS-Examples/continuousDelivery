@@ -4,6 +4,9 @@ ARG terraform_version=0.11.11
 ARG kubectl_version=1.10.3
 ARG helm_version=2.11.0
 ARG cloudbreak_cli_version=2.7.1
+ARG docker_compose_version=1.23.2
+
+ENV TMPDIR=/tmp
 
 USER root
 
@@ -15,6 +18,9 @@ RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/${kubectl_version}/2018-0
 
 RUN wget https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip \
  && whoami && unzip terraform_${terraform_version}_linux_amd64.zip -d /usr/bin/
+
+RUN wget https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-$(uname -s)-$(uname -m) --output-document=docker-compose \
+ && install docker-compose /usr/bin
 
 RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
@@ -31,10 +37,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -  \
     && add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-
-# Install the cloudbreak cli to instantiate clusters
-RUN wget -qO- https://s3-us-west-2.amazonaws.com/cb-cli/cb-cli_${cloudbreak_cli_version}_Linux_x86_64.tgz \
- | tar xvz -C /usr/bin
 
 # Install the actual apt packages we need
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -66,10 +68,9 @@ RUN gem install --no-ri --no-doc \
     bundler \
     inspec
 
-
 USER jenkins
 
 RUN terraform version \
  && kubectl version --client \
  && helm version --client \
- && cb --version
+ && docker-compose --version
