@@ -25,7 +25,12 @@ RUN wget https://github.com/docker/compose/releases/download/${docker_compose_ve
  && install docker-compose /usr/bin
 
 RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb \
- && dpkg -i erlang-solutions_1.0_all.deb
+  && dpkg -i erlang-solutions_1.0_all.deb
+
+RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/a/amazon-ecr-credential-helper/amazon-ecr-credential-helper_0.2.0-1_amd64.deb \
+  && dpkg -i amazon-ecr-credential-helper_0.2.0-1_amd64.deb
+
+COPY config.json ${HOME}/.docker/config.json
 
 RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
