@@ -1,4 +1,8 @@
-FROM jenkins/jenkins
+FROM jenkins/jenkins:lts
+
+ARG docker_config
+ENV DOCKER_CONFIG=${docker_config}
+COPY config.json ${docker_config}/config.json
 
 ENV JENKINS_REF /usr/share/jenkins/ref
 
@@ -68,3 +72,4 @@ RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/lin
 
 RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws \
     && install heptio-authenticator-aws /usr/bin
+

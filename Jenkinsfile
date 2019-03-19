@@ -19,7 +19,7 @@ node('master') {
 }
 
 def buildAndPushDocker(imageName, dockerFilePath) {
-    def image = docker.build("${imageName}:${env.GIT_COMMIT_HASH}", "-f ${dockerFilePath} .")
+    def image = docker.build("${imageName}:${env.GIT_COMMIT_HASH}", "-f ${dockerFilePath} --build-arg docker_config=/etc/docker .")
 
     if (env.BRANCH_NAME == 'master') {
         docker.withRegistry("https://199837183662.dkr.ecr.us-east-2.amazonaws.com", "ecr:us-east-2:aws_jenkins_user") {

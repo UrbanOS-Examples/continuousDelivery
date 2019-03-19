@@ -7,6 +7,7 @@ ARG cloudbreak_cli_version=2.7.1
 ARG docker_compose_version=1.23.2
 ARG erlang_version=21.2.5-1
 ARG elixir_version=1.8.1-2
+ARG docker_config
 
 ENV TMPDIR=/tmp
 
@@ -30,7 +31,7 @@ RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb \
 RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/a/amazon-ecr-credential-helper/amazon-ecr-credential-helper_0.2.0-1_amd64.deb \
   && dpkg -i amazon-ecr-credential-helper_0.2.0-1_amd64.deb
 
-COPY config.json ${HOME}/.docker/config.json
+COPY config.json ${docker_config}/config.json
 
 RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
