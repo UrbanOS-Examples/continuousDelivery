@@ -2,7 +2,7 @@ FROM jenkins/jenkins:lts
 
 ARG docker_config
 ENV DOCKER_CONFIG=${docker_config}
-COPY config.json ${docker_config}
+COPY config.json ${docker_config}/config.json
 
 ENV JENKINS_REF /usr/share/jenkins/ref
 
