@@ -58,11 +58,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install python packages
 RUN pip3 install awscli
 
-# Install ruby gems
-RUN gem install --no-ri --no-doc \
-    bundler \
-    inspec
-
 # Install static binaries
 RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip \
     && unzip terraform_0.11.10_linux_amd64.zip -d /usr/bin/
