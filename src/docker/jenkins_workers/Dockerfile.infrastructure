@@ -36,6 +36,7 @@ COPY config.json ${docker_config}/config.json
 RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
  && install linux-amd64/helm /usr/bin
+
 # Install updated apt repositories and necessary dependencies
 RUN apt update && apt install -y --no-install-recommends \
     # install dependencies for adding package repository
@@ -76,11 +77,6 @@ RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.8.
 RUN helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
 RUN helm repo add stable https://kubernetes-charts.storage.googleapis.com
 RUN mix local.hex --force && mix local.rebar --force
-
-# Install ruby gems
-RUN gem install --no-ri --no-doc \
-    bundler \
-    inspec
 
 USER jenkins
 
