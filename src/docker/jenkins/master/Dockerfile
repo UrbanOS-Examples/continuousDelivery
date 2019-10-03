@@ -62,9 +62,8 @@ RUN pip3 install awscli
 RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip \
     && unzip terraform_0.11.10_linux_amd64.zip -d /usr/bin/
 
-RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/kubectl \
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl \
     && install kubectl /usr/bin
 
-RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/bin/linux/amd64/heptio-authenticator-aws \
-    && install heptio-authenticator-aws /usr/bin
-
+RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator \
+    && install aws-iam-authenticator /usr/bin
