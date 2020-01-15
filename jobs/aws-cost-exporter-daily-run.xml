@@ -1,0 +1,62 @@
+
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.jira.JiraProjectProperty plugin="jira@3.0.7"/>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>COST_EXPORTER_VERSION</name>
+          <description>The version of the cost exporter docker to run. Source and build are in https://github.com/SmartColumbusOS/aws-cost-exporter</description>
+          <defaultValue>2.0.1</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>PUSHGATEWAY_URL</name>
+          <description>The hostname for a prometheus push gateway</description>
+          <defaultValue>pushgateway.prod.internal.smartcolumbusos.com</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>PARENT_COST_ROLE_ARN</name>
+          <description>The role ARN to assume in order to read all account costs</description>
+          <defaultValue>arn:aws:iam::993761728866:role/CostExplorer</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ACCOUNT_MAPPINGS</name>
+          <description>A JSON string of mappings from account ID to human readable name for the prometheus metric</description>
+          <defaultValue>{&quot;068920858268&quot;:&quot;sandbox&quot;,&quot;199837183662&quot;:&quot;alm&quot;,&quot;073132350570&quot;:&quot;dev&quot;,&quot;647770347641&quot;:&quot;staging&quot;,&quot;374013108165&quot;:&quot;prod&quot;}</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <assignedNode>master</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H 19 * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>docker run \
+--rm \
+-e PUSHGATEWAY_URL=&quot;${PUSHGATEWAY_URL}&quot; \
+-e PARENT_COST_ROLE_ARN=&quot;${PARENT_COST_ROLE_ARN}&quot; \
+-e ACCOUNT_MAPPINGS=&quot;${ACCOUNT_MAPPINGS}&quot; \
+smartcolumbusos/aws_cost_exporter:${COST_EXPORTER_VERSION}</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
