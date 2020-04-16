@@ -88,5 +88,17 @@ Sometimes the number of security errors and warning under the "Manage Jenkins" p
 
 1. Log in to Jenkins
 2. Go to Jenkins > Manage Jenkins in the toolbar on the left
+![image](https://user-images.githubusercontent.com/31485710/79465695-b466a000-7fc9-11ea-96fd-8c3e362ea02b.png)
+3. Let people know you are working on Jenkins updates and click on the "Prepare to Shutdown" button towards the bottom of the screen to put Jenkins into a mode where it won't run new builds.
+![image](https://user-images.githubusercontent.com/31485710/79466475-a402f500-7fca-11ea-8af8-0295603fcad8.png)
+4. If Jenkins has a warning near the top of the screen about the Jenkins version itself needing updates, then click on the "Update automatically" button it presents to you and wait for it to update and reboot.
+5. Click on the "Manage Plugins" button to get a list of all the plugins needing updates.
+![image](https://user-images.githubusercontent.com/31485710/79466685-e6c4cd00-7fca-11ea-9bee-f56f063f5b64.png)
+6. For each plugin listed under the "Updates" tab, check its check box and then click on "Download now and install after restart" (the wording will be similar, at least). (Optionally) click the "Check now" button to make sure you have the most recent list of plugins to update. You should be taken to the update center and given a status of the installs. Wait until they are all done downloading and ready for a restart. __NOTE: Take note of ANY plugins saying that they update the format of their configuration or otherwise have red notices on them. You will likely need to manually verify and correct the behavior/config of those plugins after an upgrade__
+![image](https://user-images.githubusercontent.com/31485710/79466843-1d024c80-7fcb-11ea-8eef-64bfc41f8cc9.png)
+![image](https://user-images.githubusercontent.com/31485710/79467256-97cb6780-7fcb-11ea-8cde-05bb098c6695.png)
+7. Jenkins is notoriously bad about actually restarting after the plugins have downloaded, even if you check the option. So go to "<jenkins url>/restart" in your browser to actually force a restart.
+![image](https://user-images.githubusercontent.com/31485710/79467523-d6612200-7fcb-11ea-8c0d-786e9497f3b4.png)
+8. Wait for Jenkins to restart and verify under "Manage Jenkins" and "Manage Plugins" that no more updates are necessary. Jenkins will also warn you, under "Manage Jenkins" if any plugin configuration need updated due to the upgrade.
 
-    * EFS for Jenkins - done
+Now that the plugins and/or Jenkins are updated, we need to take note of them in source control (here) to make sure we have them in case we need to restore them. 
