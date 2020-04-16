@@ -1,6 +1,6 @@
 ace-editor:1.1
 amazon-ecr:1.6
-amazon-ecs:1.27
+amazon-ecs:1.30
 ansicolor:0.6.3
 ant:1.11
 antisamy-markup-formatter:2.0
@@ -44,7 +44,7 @@ command-launcher:1.4
 conditional-buildstep:1.3.6
 config-file-provider:3.6.3
 copyartifact:1.43.1
-credentials:2.3.5
+credentials:2.3.6
 credentials-binding:1.21
 display-url-api:2.3.2
 docker-commons:1.16
