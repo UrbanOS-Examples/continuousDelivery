@@ -102,3 +102,31 @@ Sometimes the number of security errors and warning under the "Manage Jenkins" p
 8. Wait for Jenkins to restart and verify under "Manage Jenkins" and "Manage Plugins" that no more updates are necessary. Jenkins will also warn you, under "Manage Jenkins" if any plugin configuration need updated due to the upgrade.
 
 Now that the plugins and/or Jenkins are updated, we need to take note of them in source control (here) to make sure we have them in case we need to restore them. 
+1. Grab a list of all the plugins we have. At present, you can't use the commands listed earlier on in this README as you need to logged in.
+  a. Log in and click on "Manage Jenkins"
+  b. Click on the "Script Console" button
+  ![image](https://user-images.githubusercontent.com/31485710/79471820-12e34c80-7fd1-11ea-8ed5-327d891a0e39.png)
+  c. Enter and run the following script to get a sorted and formatted list of all plugins:
+  ```groovy
+  Jenkins.instance.pluginManager.plugins.sort(false).each{
+    plugin -> 
+      println ("${plugin.getShortName()}:${plugin.getVersion()}")
+  }
+  ```
+  ![image](https://user-images.githubusercontent.com/31485710/79472035-58a01500-7fd1-11ea-857d-3826dc91c4c2.png)
+  d. Copy the list of plugins returned onto your clipboard
+2. Paste the copied list into the `src/docker/jenkins/master/plugins.txt` file and verify that its git diff isn't too huge (if it is, it's possible you messed up)
+3. Open a PR for the change and confirm that the CI build for it makes a new master docker image successfully.
+4. Once you merge into master, check the CI merge build to confirm what the new master docker image tag is.
+![image](https://user-images.githubusercontent.com/31485710/79472538-f5fb4900-7fd1-11ea-968c-55dda16cb44b.png)
+5. In the [scos-alm](https://github.com/SmartColumbusOS/scos-alm) repository, update the docker image tag in the `jenkins.tf` file.
+![image](https://user-images.githubusercontent.com/31485710/79472750-3955b780-7fd2-11ea-86e2-e576968befcd.png)
+6. Put that change through a PR, merge, etc. and then `terraform` plan and apply those changes from your local workstation (they are not done by CI as they affect CI).
+7. Once the `terraform` steps are done, you'll need to manually force AWS ECS to roll the master, as it won't on its own. Make sure to let people know that Jenkins is going down (you can even do a "Prepare for Shutdown" as described earlier.
+  a. Go to ECS in AWS and on click on the main Jenkins cluster in the "Clusters" tab
+  ![image](https://user-images.githubusercontent.com/31485710/79473153-be40d100-7fd2-11ea-8aa3-39d1ca403a27.png)
+  b. Click on the "tasks" tab and the check the main master task. It will have "continuous delivery" in its name.
+  ![image](https://user-images.githubusercontent.com/31485710/79473412-18da2d00-7fd3-11ea-967d-d7dc2f9fea97.png)
+  c. Click on the "stop" button, and ECS will stop the container and run a new one with the latest image.
+  ![image](https://user-images.githubusercontent.com/31485710/79473519-3c04dc80-7fd3-11ea-9e0d-b444356bf07c.png)
+  d. After a few minutes verify that Jenkins back up and running with no warning or errors under "Manage Jenkins"
