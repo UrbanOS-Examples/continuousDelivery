@@ -81,3 +81,12 @@ Goals:
   * Other  
     * Resolve conflict with the elb security group name.
     * Consider an approach where security groups are reusable. E.g. use same security groups for Delivery Pipeline load balancers    
+
+
+## Upgrading Jenkins Master
+Sometimes the number of security errors and warning under the "Manage Jenkins" page get a little high. Here is how to deal with this:
+
+1. Log in to Jenkins
+2. Go to Jenkins > Manage Jenkins in the toolbar on the left
+
+    * EFS for Jenkins - done
