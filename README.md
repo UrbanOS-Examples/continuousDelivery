@@ -129,4 +129,4 @@ Now that the plugins and/or Jenkins are updated, we need to take note of them in
   ![image](https://user-images.githubusercontent.com/31485710/79473412-18da2d00-7fd3-11ea-967d-d7dc2f9fea97.png)
   c. Click on the "stop" button, and ECS will stop the container and run a new one with the latest image.
   ![image](https://user-images.githubusercontent.com/31485710/79473519-3c04dc80-7fd3-11ea-9e0d-b444356bf07c.png)
-  d. After a few minutes verify that Jenkins back up and running with no warning or errors under "Manage Jenkins"
+  d. After a few minutes verify that Jenkins is back up and running with no warning or errors under "Manage Jenkins"
