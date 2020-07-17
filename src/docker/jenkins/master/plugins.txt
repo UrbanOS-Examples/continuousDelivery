@@ -75,7 +75,7 @@ jira:3.0.15
 job-dsl:1.77
 jquery-detached:1.2.1
 jsch:0.1.55.2
-junit:1.28
+junit:1.29
 kubernetes-cd:2.3.0
 kubernetes-cli:1.8.2
 kubernetes-client-api:4.8.0-1
@@ -83,8 +83,8 @@ kubernetes-credentials:0.6.2
 ldap:1.22
 lockable-resources:2.7
 mailer:1.32
-matrix-auth:2.5
-matrix-project:1.14
+matrix-auth:2.6.2
+matrix-project:1.17
 maven-plugin:3.6
 mercurial:2.9
 metrics:4.0.2.6
