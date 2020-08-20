@@ -1,7 +1,7 @@
 ace-editor:1.1
 amazon-ecr:1.6
 amazon-ecs:1.30
-ansicolor:0.6.3
+ansicolor:0.7.2
 ant:1.11
 antisamy-markup-formatter:2.0
 apache-httpcomponents-client-4-api:4.5.10-2.0
