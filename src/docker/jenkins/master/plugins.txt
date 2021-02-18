@@ -57,9 +57,9 @@ favorite:2.3.2
 git:4.6.0
 git-client:3.6.0
 git-server:1.9
-github:1.33.0
+github:1.33.1
 github-api:1.122
-github-branch-source:2.9.5
+github-branch-source:2.9.6
 google-oauth-plugin:1.0.0
 gradle:1.36
 greenballs:1.15
