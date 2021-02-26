@@ -8,7 +8,7 @@ ENV JENKINS_REF /usr/share/jenkins/ref
 
 # install jenkins plugins
 COPY plugins.txt $JENKINS_REF/
-RUN jenkins-plugin-cli -f $JENKINS_REF/plugins.txt
+RUN jenkins-plugin-cli --latest false -f $JENKINS_REF/plugins.txt
 
 # ECS currently has a hard limit of 3g for jenkins master.
 # 3072m - 256m = 2816m
