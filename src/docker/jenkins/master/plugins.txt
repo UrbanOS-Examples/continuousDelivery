@@ -94,7 +94,6 @@ node-iterator-api:1.5.0
 oauth-credentials:0.4
 okhttp-api:3.14.9
 pam-auth:1.6
-parameterized-trigger:2.36
 performance:3.17
 pipeline-build-step:2.13
 pipeline-graph-analysis:1.10
