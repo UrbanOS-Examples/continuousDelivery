@@ -2,7 +2,7 @@ FROM jenkinsci/jnlp-slave:3.19-1
 
 ARG terraform_version=0.12.30
 ARG kubectl_version=1.14.6
-ARG helm_version=2.11.0
+ARG helm_version=2.17.0
 ARG docker_compose_version=1.23.2
 ARG erlang_version=21.2.5-1
 ARG erlang_solutions_version=1.0
