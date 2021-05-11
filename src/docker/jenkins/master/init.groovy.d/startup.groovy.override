@@ -31,7 +31,7 @@ private configureSecurity() {
     jenkins.setAuthorizationStrategy(new FullControlOnceLoggedInAuthorizationStrategy())
 
     def securityRealm = new LDAPSecurityRealm(
-      "ldap://iam-master.alm.internal.smartcolumbusos.com", //server
+      "ldaps://iam-master.alm.internal.smartcolumbusos.com", //server
       "dc=internal,dc=smartcolumbusos,dc=com", //rootDn
       "cn=users,cn=accounts", //userSearchBase
       "uid={0}", //userSearchFilter
