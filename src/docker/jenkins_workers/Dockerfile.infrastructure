@@ -1,8 +1,8 @@
 FROM jenkinsci/jnlp-slave:3.19-1
 
-ARG terraform_version=0.12.30
+ARG terraform_version=0.12.31
 ARG kubectl_version=1.14.6
-ARG helm_version=2.17.0
+ARG helm_version=3.5.4
 ARG docker_compose_version=1.23.2
 ARG erlang_version=21.2.5-1
 ARG erlang_solutions_version=1.0
@@ -34,7 +34,7 @@ RUN wget http://mirrors.kernel.org/ubuntu/pool/universe/a/amazon-ecr-credential-
 
 COPY config.json ${docker_config}/config.json
 
-RUN wget https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz \
+RUN wget https://get.helm.sh/helm-v${helm_version}-linux-amd64.tar.gz \
  && tar -xvf helm-v${helm_version}-linux-amd64.tar.gz \
  && install linux-amd64/helm /usr/bin
 
@@ -73,8 +73,7 @@ RUN apt update && apt install -y --no-install-recommends \
 RUN pip3 install awscli
 
 # Install S3 helm plugin and add repos
-RUN helm init --stable-repo-url https://charts.helm.sh/stable --client-only
-RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.8.0
+RUN helm plugin install https://github.com/hypnoglow/helm-s3.git --version=v0.10.0
 RUN helm repo add incubator https://charts.helm.sh/incubator
 RUN helm repo add stable https://charts.helm.sh/stable
 RUN mix local.hex --force && mix local.rebar --force
