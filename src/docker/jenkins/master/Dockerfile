@@ -23,3 +23,5 @@ ENV JAVA_OPTS -Dorg.eclipse.jetty.server.Request.maxFormContentSize=100000000 \
 
 # copy scripts
 COPY init.groovy.d $JENKINS_REF/init.groovy.d/
+
+USER root
