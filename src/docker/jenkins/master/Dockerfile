@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:2.277.4-lts
 
 ARG docker_config
 ENV DOCKER_CONFIG=${docker_config}
@@ -59,8 +59,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install awscli
 
 # Install static binaries
-RUN wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip \
-    && unzip terraform_0.11.10_linux_amd64.zip -d /usr/bin/
+RUN wget https://releases.hashicorp.com/terraform/0.12.31/terraform_0.12.31_linux_amd64.zip \
+    && unzip terraform_0.12.31_linux_amd64.zip -d /usr/bin/
 
 RUN wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl \
     && install kubectl /usr/bin
