@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.277.4-lts
+FROM jenkins/jenkins:2.303.1
 
 ARG docker_config
 ENV DOCKER_CONFIG=${docker_config}
